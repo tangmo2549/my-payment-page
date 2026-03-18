@@ -1,0 +1,2248 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ระบบสรุปยอดขายไอติม Pro</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=Prompt:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+/* ── DEFAULT THEME: Lavender ── */
+:root {
+  --bg: #cac9fd;
+  --surface: #ffffff;
+  --card: #ffffff;
+  --card2: #f5f7ff;
+  --border: #b8caef;
+  --border2: #7ea2f0;
+  --p: #3b6fe8;
+  --p2: #5b8cf5;
+  --s1: #e8458a;
+  --s2: #16a97a;
+  --s3: #d4900a;
+  --s4: #7c5cdc;
+  --text: #ffffff;
+  --text-dark: #1a1f3a;
+  --muted: #6b7aaa;
+  --muted2: #4a5380;
+  --success: #16a97a;
+  --warn: #d4900a;
+  --danger: #e03e3e;
+  --school1: #e8458a;
+  --school2: #0e90c8;
+  --school3: #e07020;
+  --grad-h1: linear-gradient(135deg, #3b6fe8 0%, #7c5cdc 50%, #e8458a 100%);
+}
+
+/* ── THEME: Mint ── */
+[data-theme="mint"] {
+  --bg: #b8f0e0;
+  --surface: #ffffff;
+  --card: #ffffff;
+  --card2: #f0fdf8;
+  --border: #c6f0e2;
+  --border2: #a3e4cf;
+  --p: #059669;
+  --p2: #34d399;
+  --s1: #0891b2;
+  --s2: #16a97a;
+  --s3: #d97706;
+  --s4: #7c5cdc;
+  --text-dark: #0d2b20;
+  --muted: #4d8a72;
+  --muted2: #2d6652;
+  --school1: #e8458a;
+  --school2: #0891b2;
+  --school3: #d97706;
+  --grad-h1: linear-gradient(135deg, #059669 0%, #0891b2 50%, #7c5cdc 100%);
+}
+
+/* ── THEME: Peach ── */
+[data-theme="peach"] {
+  --bg: #fdd5b8;
+  --surface: #ffffff;
+  --card: #ffffff;
+  --card2: #fff7f0;
+  --border: #fde3cc;
+  --border2: #f9c9a3;
+  --p: #c2410c;
+  --p2: #ea580c;
+  --s1: #e8458a;
+  --s2: #16a97a;
+  --s3: #d4900a;
+  --s4: #7c5cdc;
+  --text-dark: #2d1200;
+  --muted: #8a5030;
+  --muted2: #6b3820;
+  --school1: #dc2626;
+  --school2: #0e90c8;
+  --school3: #7c5cdc;
+  --grad-h1: linear-gradient(135deg, #c2410c 0%, #e8458a 50%, #d97706 100%);
+}
+
+/* ── THEME: Sky ── */
+[data-theme="sky"] {
+  --bg: #bae6fd;
+  --surface: #ffffff;
+  --card: #ffffff;
+  --card2: #f0f9ff;
+  --border: #d0edf9;
+  --border2: #a8d8f0;
+  --p: #0369a1;
+  --p2: #0ea5e9;
+  --s1: #e8458a;
+  --s2: #16a97a;
+  --s3: #d4900a;
+  --s4: #7c5cdc;
+  --text-dark: #0c1a2e;
+  --muted: #3d6e8a;
+  --muted2: #1e4d6b;
+  --school1: #e8458a;
+  --school2: #0369a1;
+  --school3: #e07020;
+  --grad-h1: linear-gradient(135deg, #0369a1 0%, #0891b2 50%, #7c5cdc 100%);
+}
+
+/* ── THEME: Dark ── */
+[data-theme="dark"] {
+  --bg: #0d0d14;
+  --surface: #141825;
+  --card: #1a1f30;
+  --card2: #1e2438;
+  --border: #2a3050;
+  --border2: #36406a;
+  --p: #60a5fa;
+  --p2: #93c5fd;
+  --s1: #f472b6;
+  --s2: #34d399;
+  --s3: #fbbf24;
+  --s4: #a78bfa;
+  --text-dark: #ffffff;
+  --muted: #9ca3c4;
+  --muted2: #c4c9e0;
+  --success: #34d399;
+  --warn: #fbbf24;
+  --danger: #f87171;
+  --school1: #f472b6;
+  --school2: #38bdf8;
+  --school3: #fb923c;
+  --grad-h1: linear-gradient(135deg, #60a5fa 0%, #a78bfa 50%, #f472b6 100%);
+}
+[data-theme="dark"] body { color:#ffffff; }
+[data-theme="dark"] .nav-title p { color:#c4c9e0; }
+[data-theme="dark"] td { color:#ffffff; }
+[data-theme="dark"] th { color:#c4c9e0; }
+[data-theme="dark"] .rank-name { color:#ffffff; }
+[data-theme="dark"] .rec-name { color:#ffffff; }
+[data-theme="dark"] .rec-reason { color:#c4c9e0; }
+[data-theme="dark"] .school-sub { color:#9ca3c4; }
+[data-theme="dark"] .school-foot span { color:#9ca3c4; }
+[data-theme="dark"] .date-thai { color:#c4c9e0; }
+[data-theme="dark"] .insight-text { color:#c4c9e0; }
+[data-theme="dark"] .insight-text strong { color:#ffffff; }
+[data-theme="dark"] .gstat label { color:#9ca3c4; }
+[data-theme="dark"] .gstat .gval { color:#ffffff; }
+[data-theme="dark"] .ana-title { color:#ffffff; }
+[data-theme="dark"] .modal-title { color:#ffffff; }
+[data-theme="dark"] .week-total { color:#c4c9e0; }
+[data-theme="dark"] .week-lbl { color:#9ca3c4; }
+[data-theme="dark"] .time-lbl { color:#9ca3c4; }
+[data-theme="dark"] .time-val { color:#c4c9e0; }
+[data-theme="dark"] .chip { color:#c4c9e0; }
+[data-theme="dark"] .rank-qty { color:#c4c9e0; }
+[data-theme="dark"] .empty-state { color:#9ca3c4; }
+[data-theme="dark"] .item-row input { color:#ffffff; }
+[data-theme="dark"] .week-bar-single:hover::after { color:#ffffff; background:var(--card2); }
+[data-theme="dark"] .sug-item .sug-name { color:#ffffff; }
+
+/* ── THEME SWITCHER ── */
+.theme-switcher {
+  display:flex; align-items:center; gap:6px;
+  background:var(--card); border:1px solid var(--border2);
+  border-radius:30px; padding:5px 10px;
+  box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
+.theme-dot {
+  width:22px; height:22px; border-radius:50%;
+  border:2.5px solid transparent; cursor:pointer;
+  transition:transform .2s, border-color .2s;
+  position:relative;
+}
+.theme-dot:hover { transform:scale(1.2); }
+.theme-dot.active { border-color:var(--text-dark); transform:scale(1.15); }
+.theme-dot.active::after {
+  content:'✓'; position:absolute; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  font-size:10px; color:white; font-weight:800;
+  text-shadow:0 1px 2px rgba(0,0,0,.5);
+}
+.td-lavender { background:linear-gradient(135deg,#a78bfa,#3b6fe8); }
+.td-mint     { background:linear-gradient(135deg,#34d399,#059669); }
+.td-peach    { background:linear-gradient(135deg,#fb923c,#c2410c); }
+.td-sky      { background:linear-gradient(135deg,#38bdf8,#0369a1); }
+.td-dark     { background:linear-gradient(135deg,#374151,#111827); }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--bg); color:var(--text-dark); font-family:'Noto Sans Thai','IBM Plex Sans Thai',sans-serif; min-height:100vh; font-size:15px; line-height:1.65; }
+
+body::before {
+  content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
+  background:
+    radial-gradient(ellipse 900px 700px at 0% 0%, rgba(59,111,232,0.08) 0%, transparent 55%),
+    radial-gradient(ellipse 700px 600px at 100% 100%, rgba(232,69,138,0.06) 0%, transparent 55%),
+    radial-gradient(ellipse 600px 500px at 60% 40%, rgba(124,92,220,0.04) 0%, transparent 55%);
+}
+
+.page { max-width:1280px; margin:0 auto; padding:20px 24px; position:relative; z-index:1; }
+
+/* NAV */
+nav {
+  display:flex; align-items:center; gap:16px; margin-bottom:28px;
+  animation:fadeDown .5s ease both;
+}
+.nav-logo { font-size:36px; filter:drop-shadow(0 2px 6px rgba(59,111,232,.25)); }
+.nav-title { font-family:'Prompt',sans-serif; }
+
+.nav-title h1 {
+  font-family: 'Prompt', sans-serif;
+  font-size: 1.55rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  line-height: 1.2;
+  background: var(--grad-h1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.nav-title p {
+  font-family: 'Noto Sans Thai', sans-serif;
+  font-size: .96rem;
+  font-weight: 600;
+  color: #1e2a5e;
+  margin-top: 3px;
+  letter-spacing: .1px;
+  opacity: 1;
+}
+[data-theme="dark"] .nav-title p { color: #e0e4ff; opacity:1; }
+[data-theme="mint"] .nav-title p { color: #0a4030; }
+[data-theme="peach"] .nav-title p { color: #4a1800; }
+[data-theme="sky"] .nav-title p { color: #092040; }
+
+.nav-tabs { display:flex; gap:4px; margin-left:auto; background:var(--card2); border:1px solid var(--border); border-radius:12px; padding:4px; }
+.tab-btn {
+  font-family:'Noto Sans Thai',sans-serif; font-size:.85rem; font-weight:600;
+  background:none; border:none; color:var(--muted); padding:7px 16px; border-radius:8px;
+  cursor:pointer; transition:all .2s; white-space:nowrap;
+}
+.tab-btn.active { background:var(--p); color:#fff; box-shadow:0 4px 14px rgba(59,111,232,.3); }
+.tab-btn:hover:not(.active) { color:var(--text-dark); background:var(--border); }
+
+/* TAB PANELS */
+.tab-panel { display:none; animation:fadeUp .35s ease both; }
+.tab-panel.active { display:block; }
+
+/* DATE BAR */
+.date-bar {
+  display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+  background:var(--card); border:1px solid var(--border); border-radius:14px;
+  padding:14px 18px; margin-bottom:20px;
+}
+.date-bar label { font-family:'Noto Sans Thai',sans-serif; font-weight:600; color:var(--p2); font-size:.88rem; white-space:nowrap; }
+.date-bar input[type="date"], .date-bar input[type="time"], .date-bar select {
+  background:var(--card2); border:1px solid var(--border2); border-radius:8px;
+  color:var(--text-dark); font-family:'Noto Sans Thai',sans-serif; font-size:.88rem;
+  padding:7px 12px; outline:none; cursor:pointer; transition:border-color .2s;
+}
+.date-bar input:focus, .date-bar select:focus { border-color:var(--p); }
+.date-thai { font-family:'Noto Sans Thai',sans-serif; font-size:.85rem; color:var(--muted2); margin-left:4px; }
+.spacer { flex:1; }
+
+/* SCHOOLS GRID */
+.schools-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:18px; }
+@media(max-width:900px) { .schools-grid { grid-template-columns:1fr; } }
+
+.school-card {
+  background:var(--card); border:1px solid var(--border); border-radius:18px;
+  padding:18px; position:relative; overflow:hidden;
+  transition:transform .2s, box-shadow .2s;
+}
+.school-card:hover { transform:translateY(-3px); box-shadow:0 16px 40px rgba(59,111,232,.12); }
+.school-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:2.5px; border-radius:18px 18px 0 0;
+}
+.school-card[data-s="1"]::before { background:linear-gradient(90deg,var(--school1),#fb7185); }
+.school-card[data-s="2"]::before { background:linear-gradient(90deg,var(--school2),#7dd3fc); }
+.school-card[data-s="3"]::before { background:linear-gradient(90deg,var(--school3),#fdba74); }
+
+.school-hd { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:14px; }
+.school-nm { font-family:'Noto Sans Thai',sans-serif; font-weight:700; font-size:.95rem; }
+.school-card[data-s="1"] .school-nm { color:var(--school1); }
+.school-card[data-s="2"] .school-nm { color:var(--school2); }
+.school-card[data-s="3"] .school-nm { color:var(--school3); }
+.school-sub { font-size:.75rem; color:var(--muted); margin-top:2px; }
+
+.add-row-btn {
+  background:none; border:1px dashed var(--border2); border-radius:7px;
+  color:var(--muted); padding:4px 10px; font-size:.78rem; cursor:pointer;
+  font-family:'Noto Sans Thai',sans-serif; transition:all .2s; white-space:nowrap;
+}
+.add-row-btn:hover { border-color:var(--p); color:var(--p); }
+
+.col-headers {
+  display:grid; grid-template-columns:1fr 58px 75px 28px;
+  gap:5px; margin-bottom:6px; padding:0 2px;
+}
+.col-headers span { font-size:.7rem; color:var(--muted); font-family:'Noto Sans Thai',sans-serif; text-align:center; }
+.col-headers span:first-child { text-align:left; }
+
+.items-list { display:flex; flex-direction:column; gap:6px; min-height:32px; }
+
+.item-row {
+  display:grid; grid-template-columns:1fr 58px 75px 28px;
+  gap:5px; align-items:center; animation:rowIn .2s ease both;
+}
+@keyframes rowIn { from{opacity:0;transform:translateX(-8px)} to{opacity:1;transform:none} }
+
+.item-row input {
+  background:var(--card2); border:1px solid var(--border2); border-radius:7px;
+  color:var(--text-dark); font-family:'Noto Sans Thai',sans-serif; font-size:.83rem;
+  padding:6px 9px; outline:none; transition:border-color .2s; width:100%;
+}
+.item-row input:focus { border-color:var(--p); box-shadow:0 0 0 2px rgba(59,111,232,.1); }
+.item-row input[type="number"] { text-align:center; }
+.item-row input.price-inp { color:var(--success); }
+[data-theme="dark"] .item-row input { border-color:rgba(255,255,255,0.1); }
+
+/* Autocomplete */
+.autocomplete-wrap { position:relative; }
+.suggestions {
+  position:absolute; top:calc(100% + 3px); left:0; right:0; z-index:200;
+  background:var(--surface); border:1px solid var(--border2); border-radius:9px;
+  box-shadow:0 8px 30px rgba(59,111,232,.15); overflow:hidden; display:none;
+}
+.suggestions.open { display:block; }
+.sug-item {
+  padding:7px 12px; font-size:.82rem; cursor:pointer;
+  display:flex; align-items:center; justify-content:space-between;
+  transition:background .15s;
+}
+.sug-item:hover, .sug-item.focused { background:rgba(59,111,232,.08); }
+.sug-item .sug-name { color:var(--text-dark); }
+.sug-item .sug-price { color:var(--success); font-size:.75rem; }
+
+.del-btn {
+  background:none; border:none; color:var(--muted); cursor:pointer;
+  font-size:.95rem; padding:4px; border-radius:6px; transition:color .2s;
+  display:flex; align-items:center; justify-content:center;
+}
+.del-btn:hover { color:var(--danger); }
+
+.school-foot {
+  margin-top:12px; padding-top:10px; border-top:1px solid var(--border);
+  display:flex; justify-content:space-between; align-items:center;
+}
+.school-foot span { font-family:'Noto Sans Thai',sans-serif; font-size:.8rem; color:var(--muted); }
+.school-foot strong { font-family:'Noto Sans Thai',sans-serif; font-size:1.2rem; font-weight:800; }
+.school-card[data-s="1"] .school-foot strong { color:var(--school1); }
+.school-card[data-s="2"] .school-foot strong { color:var(--school2); }
+.school-card[data-s="3"] .school-foot strong { color:var(--school3); }
+
+/* GRAND TOTAL BAR */
+.grand-bar {
+  background:var(--card); border:1px solid var(--border); border-radius:14px;
+  padding:16px 20px; display:flex; align-items:center; gap:20px; flex-wrap:wrap;
+  margin-bottom:18px;
+}
+.gstat { display:flex; flex-direction:column; gap:2px; }
+.gstat label { font-size:.72rem; color:var(--muted); font-family:'Noto Sans Thai',sans-serif; }
+.gstat .gval { font-family:'Noto Sans Thai',sans-serif; font-weight:800; font-size:1.4rem; color:var(--text-dark); }
+.gstat.main .gval {
+  font-size:2rem;
+  background:linear-gradient(135deg,var(--p),var(--s1));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+}
+.gdiv { width:1px; height:38px; background:var(--border); }
+.bar-actions { display:flex; gap:10px; margin-left:auto; flex-wrap:wrap; }
+
+/* BUTTONS */
+.btn {
+  font-family:'Noto Sans Thai',sans-serif; font-size:.85rem; font-weight:600;
+  border:none; border-radius:10px; padding:9px 16px; cursor:pointer;
+  transition:all .2s; display:inline-flex; align-items:center; gap:6px; white-space:nowrap;
+}
+.btn-blue { background:linear-gradient(135deg,#3b82f6,#1d4ed8); color:#fff; }
+.btn-blue:hover { transform:scale(1.04); box-shadow:0 6px 20px rgba(59,130,246,.4); }
+.btn-green { background:linear-gradient(135deg,var(--success),#059669); color:#0a1f12; }
+.btn-green:hover { transform:scale(1.04); box-shadow:0 6px 20px rgba(52,211,153,.35); }
+.btn-ghost { background:var(--card2); border:1px solid var(--border2); color:var(--muted2); }
+.btn-ghost:hover { color:var(--text-dark); border-color:var(--p); }
+.btn-warn { background:linear-gradient(135deg,var(--warn),#d97706); color:#1a0f00; }
+.btn-warn:hover { transform:scale(1.04); }
+.btn-excel { background:linear-gradient(135deg,#16a34a,#15803d); color:#fff; }
+.btn-excel:hover { transform:scale(1.04); box-shadow:0 6px 20px rgba(22,163,74,.4); }
+.btn-sm { padding:6px 12px; font-size:.78rem; }
+
+/* ===== ANALYTICS TAB ===== */
+.analytics-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; margin-bottom:20px; }
+@media(max-width:768px) { .analytics-grid { grid-template-columns:1fr; } }
+
+.ana-card {
+  background:var(--card); border:1px solid var(--border); border-radius:16px;
+  padding:18px; animation:fadeUp .4s ease both;
+}
+.ana-card.full { grid-column:1/-1; }
+.ana-title {
+  font-family:'Noto Sans Thai',sans-serif; font-weight:700; font-size:.92rem;
+  color:var(--text-dark); margin-bottom:14px; display:flex; align-items:center; gap:8px;
+}
+.ana-title .dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+
+/* Rank list */
+.rank-list { display:flex; flex-direction:column; gap:8px; }
+.rank-item {
+  display:flex; align-items:center; gap:10px; padding:8px 12px;
+  background:var(--card2); border-radius:10px;
+  transition:background .2s;
+}
+.rank-item:hover { background:var(--border); }
+.rank-num {
+  font-family:'Noto Sans Thai',sans-serif; font-weight:800; font-size:1rem;
+  width:24px; text-align:center;
+}
+.rank-n1 { color:var(--warn); }
+.rank-n2 { color:var(--muted); }
+.rank-n3 { color:#b45309; }
+.rank-nX { color:var(--muted); font-size:.85rem; }
+.rank-name { flex:1; font-size:.85rem; color:var(--text-dark); }
+.rank-bar-wrap { flex:2; height:7px; background:var(--border); border-radius:99px; overflow:hidden; }
+.rank-bar-fill { height:100%; border-radius:99px; transition:width .6s cubic-bezier(.34,1.56,.64,1); }
+.rank-qty { font-family:'Noto Sans Thai',sans-serif; font-size:.8rem; color:var(--muted2); white-space:nowrap; }
+.rank-rev { font-family:'Noto Sans Thai',sans-serif; font-size:.8rem; color:var(--success); white-space:nowrap; width:72px; text-align:right; }
+
+/* Time chart */
+.time-bars { display:flex; align-items:flex-end; gap:6px; height:90px; margin-top:4px; }
+.time-col { display:flex; flex-direction:column; align-items:center; gap:3px; flex:1; }
+.time-bar {
+  width:100%; border-radius:5px 5px 0 0; min-height:3px;
+  background:linear-gradient(180deg,var(--p),#1d4ed8);
+  transition:height .5s cubic-bezier(.34,1.56,.64,1);
+  position:relative; cursor:pointer;
+}
+.time-bar:hover::after {
+  content:attr(data-tip);
+  position:absolute; bottom:calc(100% + 5px); left:50%; transform:translateX(-50%);
+  background:var(--card2); border:1px solid var(--border2); border-radius:7px;
+  padding:4px 8px; font-size:.72rem; white-space:nowrap; color:var(--text-dark);
+  font-family:'Noto Sans Thai',sans-serif; pointer-events:none; z-index:10;
+}
+.time-lbl { font-size:.68rem; color:var(--muted); font-family:'Noto Sans Thai',sans-serif; text-align:center; }
+.time-val { font-size:.72rem; color:var(--muted2); font-family:'Noto Sans Thai',sans-serif; }
+
+/* ── WEEK GROUPED BAR CHART ── */
+.week-chart-wrap { display:flex; align-items:flex-end; gap:10px; height:140px; padding:0 4px; }
+.week-group { flex:1; display:flex; flex-direction:column; align-items:center; gap:4px; }
+.week-bars-inner { display:flex; align-items:flex-end; gap:3px; width:100%; justify-content:center; }
+.week-bar-single {
+  flex:1; border-radius:5px 5px 0 0; min-height:4px; max-width:22px;
+  transition:height .55s cubic-bezier(.34,1.56,.64,1);
+  position:relative; cursor:pointer;
+}
+.week-bar-single:hover { filter:brightness(1.15); }
+.week-bar-single:hover::after {
+  content:attr(data-tip);
+  position:absolute; bottom:calc(100%+5px); left:50%; transform:translateX(-50%);
+  background:var(--card2); border:1px solid var(--border2); border-radius:7px;
+  padding:4px 9px; font-size:.7rem; white-space:nowrap; color:var(--text-dark);
+  font-family:'Noto Sans Thai',sans-serif; pointer-events:none; z-index:20;
+  box-shadow:0 4px 12px rgba(0,0,0,.1);
+}
+.week-grand-total {
+  font-family:'Noto Sans Thai',sans-serif; font-size:.72rem; font-weight:700;
+  color:var(--text-dark); text-align:center;
+}
+.week-date-lbl {
+  font-size:.68rem; color:var(--muted); font-family:'Noto Sans Thai',sans-serif;
+  text-align:center; line-height:1.3;
+}
+.week-axis-line {
+  width:100%; height:1px; background:var(--border); margin-top:2px;
+}
+
+/* ── TIME SLOT CHART ── */
+.time-chart-container { padding:4px 0 0; }
+.time-slot-row {
+  display:grid; grid-template-columns:80px 1fr 70px 80px;
+  align-items:center; gap:10px; margin-bottom:10px;
+}
+.time-slot-label {
+  font-family:'Noto Sans Thai',sans-serif; font-size:.82rem; font-weight:600;
+  color:var(--text-dark); white-space:nowrap;
+  display:flex; align-items:center; gap:5px;
+}
+.time-slot-bar-bg {
+  height:22px; background:var(--border); border-radius:6px; overflow:hidden; position:relative;
+}
+.time-slot-bar-fill {
+  height:100%; border-radius:6px;
+  transition:width .6s cubic-bezier(.34,1.56,.64,1);
+  position:relative;
+}
+.time-slot-bar-fill.peak {
+  background:linear-gradient(90deg, #f59e0b, #d97706);
+  box-shadow:0 2px 8px rgba(245,158,11,.35);
+}
+.time-slot-bar-fill.normal {
+  background:linear-gradient(90deg, var(--p), var(--p2));
+}
+.time-slot-amt {
+  font-family:'Noto Sans Thai',sans-serif; font-size:.82rem; font-weight:700;
+  color:var(--text-dark); text-align:right; white-space:nowrap;
+}
+.time-slot-pct {
+  font-family:'Noto Sans Thai',sans-serif; font-size:.75rem;
+  color:var(--muted2); text-align:right;
+}
+.peak-badge {
+  display:inline-flex; align-items:center; gap:3px;
+  background:rgba(245,158,11,.15); color:#d97706;
+  border-radius:20px; padding:1px 7px; font-size:.68rem;
+  font-family:'Noto Sans Thai',sans-serif; font-weight:700;
+  border:1px solid rgba(245,158,11,.3);
+}
+
+/* Recommendation cards */
+.rec-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:10px; }
+.rec-card {
+  border-radius:12px; padding:13px; border:1px solid;
+  position:relative; overflow:hidden;
+}
+.rec-card.buy { background:rgba(52,211,153,.07); border-color:rgba(52,211,153,.25); }
+.rec-card.hold { background:rgba(251,191,36,.07); border-color:rgba(251,191,36,.25); }
+.rec-card.drop { background:rgba(248,113,113,.07); border-color:rgba(248,113,113,.25); }
+.rec-badge {
+  display:inline-flex; align-items:center; gap:4px;
+  font-family:'Noto Sans Thai',sans-serif; font-size:.72rem; font-weight:700;
+  padding:2px 8px; border-radius:20px; margin-bottom:7px;
+}
+.rec-card.buy .rec-badge { background:rgba(52,211,153,.2); color:var(--success); }
+.rec-card.hold .rec-badge { background:rgba(251,191,36,.2); color:var(--warn); }
+.rec-card.drop .rec-badge { background:rgba(248,113,113,.2); color:var(--danger); }
+.rec-name { font-family:'Noto Sans Thai',sans-serif; font-weight:600; font-size:.88rem; margin-bottom:3px; color:var(--text-dark); }
+.rec-reason { font-size:.76rem; color:var(--muted2); line-height:1.4; }
+.rec-stat { font-family:'Noto Sans Thai',sans-serif; font-size:.78rem; margin-top:5px; }
+.rec-card.buy .rec-stat { color:var(--success); }
+.rec-card.hold .rec-stat { color:var(--warn); }
+.rec-card.drop .rec-stat { color:var(--danger); }
+
+/* Daily summary insight */
+.insight-row {
+  display:flex; align-items:flex-start; gap:10px; padding:10px 12px;
+  border-radius:10px; background:var(--card2); margin-bottom:8px;
+}
+.insight-icon { font-size:1.1rem; flex-shrink:0; margin-top:1px; }
+.insight-text { font-size:.83rem; line-height:1.5; color:var(--muted2); }
+.insight-text strong { color:var(--text-dark); }
+
+/* HISTORY TAB */
+.hist-toolbar {
+  display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+  margin-bottom:14px;
+}
+.search-box {
+  background:var(--surface); border:1px solid var(--border2); border-radius:10px;
+  color:var(--text-dark); font-family:'Noto Sans Thai',sans-serif; font-size:.85rem;
+  padding:8px 14px; outline:none; width:220px; transition:border-color .2s;
+}
+.search-box:focus { border-color:var(--p); }
+.filter-sel {
+  background:var(--surface); border:1px solid var(--border2); border-radius:10px;
+  color:var(--text-dark); font-family:'Noto Sans Thai',sans-serif; font-size:.85rem;
+  padding:8px 12px; outline:none; cursor:pointer;
+}
+
+.hist-table-wrap {
+  background:var(--card); border:1px solid var(--border); border-radius:14px;
+  overflow:hidden;
+}
+table { width:100%; border-collapse:collapse; font-size:.85rem; }
+thead { background:var(--card2); position:sticky; top:0; z-index:5; }
+th {
+  font-family:'Noto Sans Thai',sans-serif; font-weight:600; color:var(--muted2);
+  font-size:.78rem; padding:11px 14px; text-align:left; white-space:nowrap;
+  cursor:pointer; user-select:none; transition:color .2s;
+}
+th:hover { color:var(--p); }
+th .sort-arrow { margin-left:4px; opacity:.5; }
+td { padding:10px 14px; border-top:1px solid var(--border); vertical-align:middle; color:var(--text-dark); }
+tbody tr:hover { background:rgba(59,111,232,.04); }
+
+.tag {
+  display:inline-block; padding:2px 9px; border-radius:20px;
+  font-family:'Noto Sans Thai',sans-serif; font-size:.72rem; font-weight:600; white-space:nowrap;
+}
+.tag-1 { background:rgba(244,114,182,.15); color:var(--school1); }
+.tag-2 { background:rgba(56,189,248,.15); color:var(--school2); }
+.tag-3 { background:rgba(251,146,60,.15); color:var(--school3); }
+.tag-4 { background:rgba(139,92,246,.15); color:#7c3aed; }
+.tag-5 { background:rgba(14,165,233,.15); color:#0369a1; }
+
+.amt { font-family:'Noto Sans Thai',sans-serif; font-weight:700; color:var(--success); }
+.item-chips { display:flex; flex-wrap:wrap; gap:4px; }
+.chip {
+  background:var(--card2); border:1px solid var(--border);
+  border-radius:6px; padding:2px 7px; font-size:.72rem; color:var(--muted2);
+}
+
+.empty-state {
+  text-align:center; padding:52px 20px; color:var(--muted);
+}
+.empty-state .es-icon { font-size:40px; margin-bottom:10px; }
+
+/* TOAST */
+.toast {
+  position:fixed; bottom:24px; right:24px; z-index:9999;
+  font-family:'Noto Sans Thai',sans-serif; font-weight:600; font-size:.88rem;
+  padding:12px 18px; border-radius:12px;
+  display:flex; align-items:center; gap:8px;
+  transform:translateY(70px); opacity:0;
+  transition:all .3s cubic-bezier(.34,1.56,.64,1);
+  pointer-events:none; max-width:320px;
+}
+.toast.show { transform:translateY(0); opacity:1; }
+.toast.ok { background:var(--success); color:#052e16; box-shadow:0 8px 30px rgba(52,211,153,.3); }
+.toast.err { background:var(--danger); color:#fff; box-shadow:0 8px 30px rgba(248,113,113,.3); }
+.toast.info { background:var(--p); color:#082f49; box-shadow:0 8px 30px rgba(96,165,250,.3); }
+
+/* Modal */
+.modal-bg {
+  position:fixed; inset:0; background:rgba(30,40,80,.5); z-index:500;
+  display:flex; align-items:center; justify-content:center;
+  opacity:0; pointer-events:none; transition:opacity .25s;
+}
+.modal-bg.open { opacity:1; pointer-events:all; }
+.modal {
+  background:var(--surface); border:1px solid var(--border2); border-radius:20px;
+  padding:28px; width:500px; max-width:92vw; max-height:80vh; overflow-y:auto;
+  transform:scale(.95); transition:transform .25s;
+}
+.modal-bg.open .modal { transform:scale(1); }
+.modal-title { font-family:'Noto Sans Thai',sans-serif; font-weight:800; font-size:1.1rem; color:var(--text-dark); margin-bottom:20px; display:flex; align-items:center; gap:8px; }
+.modal-close { margin-left:auto; background:none; border:none; color:var(--muted); font-size:1.3rem; cursor:pointer; }
+.modal-close:hover { color:var(--danger); }
+
+/* Animations */
+@keyframes fadeDown { from{opacity:0;transform:translateY(-14px)} to{opacity:1;transform:none} }
+@keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:none} }
+
+::-webkit-scrollbar { width:6px; height:6px; }
+::-webkit-scrollbar-track { background:var(--bg); }
+::-webkit-scrollbar-thumb { background:var(--border2); border-radius:99px; }
+
+/* Pagination */
+.pagination { display:flex; align-items:center; gap:6px; justify-content:flex-end; margin-top:12px; }
+.pg-btn {
+  background:var(--surface); border:1px solid var(--border); border-radius:7px;
+  color:var(--muted2); font-family:'Noto Sans Thai',sans-serif; font-size:.8rem;
+  padding:5px 10px; cursor:pointer; transition:all .15s;
+}
+.pg-btn:hover { color:var(--text-dark); border-color:var(--p); }
+.pg-btn.active { background:var(--p); color:#fff; border-color:var(--p); }
+.pg-btn:disabled { opacity:.3; cursor:default; }
+
+/* ── SHOP CARDS ── */
+.school-card[data-s="4"]::before { background:linear-gradient(90deg,#8b5cf6,#a78bfa); }
+.school-card[data-s="5"]::before { background:linear-gradient(90deg,#0891b2,#67e8f9); }
+.school-card[data-s="4"] .school-nm { color:#7c3aed; }
+.school-card[data-s="5"] .school-nm { color:#0369a1; }
+.school-card[data-s="4"] .school-foot strong { color:#7c3aed; }
+.school-card[data-s="5"] .school-foot strong { color:#0369a1; }
+.shop-section-title {
+  display:flex; align-items:center; gap:10px;
+  font-family:'Noto Sans Thai',sans-serif; font-size:1rem; font-weight:700;
+  color:var(--text-dark); margin:20px 0 12px;
+  padding-bottom:10px; border-bottom:2px dashed var(--border2);
+}
+.shop-section-title .shop-divider-icon { font-size:1.3rem; }
+/* ── IN-CARD TABS ── */
+.card-tabs {
+  display:flex; gap:3px; margin-bottom:11px;
+  background:var(--card2); border-radius:9px; padding:3px;
+  border:1px solid var(--border);
+}
+.card-tab-btn {
+  flex:1; font-family:'Noto Sans Thai',sans-serif; font-size:.78rem; font-weight:600;
+  background:none; border:none; color:var(--muted); padding:5px 6px; border-radius:6px;
+  cursor:pointer; transition:all .18s; white-space:nowrap; text-align:center;
+}
+.card-tab-btn.active { background:var(--card); color:var(--text-dark); box-shadow:0 1px 4px rgba(0,0,0,.09); }
+.card-tab-panel { display:none; }
+.card-tab-panel.active { display:block; }
+.sub-total-row {
+  display:flex; justify-content:space-between; align-items:center;
+  padding:5px 0 0; font-size:.75rem; color:var(--muted);
+  font-family:'Noto Sans Thai',sans-serif;
+}
+.school-grand-foot {
+  margin-top:10px; padding-top:10px; border-top:2px solid var(--border);
+  display:flex; justify-content:space-between; align-items:center;
+}
+.school-grand-foot .lbl { font-family:'Noto Sans Thai',sans-serif; font-size:.82rem; font-weight:700; color:var(--text-dark); }
+.school-grand-foot strong { font-family:'Noto Sans Thai',sans-serif; font-size:1.25rem; font-weight:800; }
+
+/* ── ITEM CHIPS DETAIL ── */
+
+.item-chip-detail {
+  display:flex; align-items:center; gap:8px; flex-wrap:wrap;
+  background:var(--card2); border:1px solid var(--border);
+  border-radius:8px; padding:5px 10px;
+}
+.icd-name {
+  font-family:'Noto Sans Thai',sans-serif; font-weight:600; font-size:.82rem;
+  color:var(--text-dark); min-width:100px;
+}
+.icd-meta { font-size:.75rem; color:var(--muted2); flex:1; }
+/* ── PAYMENT METHOD ── */
+.pay-bar {
+  display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+  background:var(--card); border:1px solid var(--border); border-radius:14px;
+  padding:14px 18px; margin-bottom:18px;
+}
+.pay-label { font-family:'Noto Sans Thai',sans-serif; font-weight:700; font-size:.9rem; color:var(--text-dark); white-space:nowrap; }
+.pay-btns { display:flex; gap:8px; flex-wrap:wrap; }
+.pay-btn {
+  display:flex; align-items:center; gap:6px;
+  font-family:'Noto Sans Thai',sans-serif; font-size:.88rem; font-weight:600;
+  border:2px solid var(--border2); border-radius:10px;
+  background:var(--card2); color:var(--muted2);
+  padding:8px 16px; cursor:pointer; transition:all .18s; white-space:nowrap;
+}
+.pay-btn:hover { border-color:var(--p); color:var(--text-dark); }
+.pay-btn.active[data-pay="cash"]    { background:#d1fae5; border-color:#059669; color:#065f46; }
+.pay-btn.active[data-pay="transfer"]{ background:#dbeafe; border-color:#3b82f6; color:#1e40af; }
+.pay-btn.active[data-pay="qr"]      { background:#ede9fe; border-color:#7c3aed; color:#4c1d95; }
+.pay-btn.active[data-pay="credit"]  { background:#fef9c3; border-color:#d97706; color:#78350f; }
+[data-theme="dark"] .pay-btn.active[data-pay="cash"]    { background:rgba(5,150,105,.2); border-color:#34d399; color:#6ee7b7; }
+[data-theme="dark"] .pay-btn.active[data-pay="transfer"]{ background:rgba(59,130,246,.2); border-color:#60a5fa; color:#93c5fd; }
+[data-theme="dark"] .pay-btn.active[data-pay="qr"]      { background:rgba(124,58,237,.2); border-color:#a78bfa; color:#c4b5fd; }
+[data-theme="dark"] .pay-btn.active[data-pay="credit"]  { background:rgba(217,119,6,.2); border-color:#fbbf24; color:#fde68a; }
+.pay-split-note { font-size:.78rem; color:var(--muted); margin-left:auto; font-family:'Noto Sans Thai',sans-serif; }
+
+/* ── PAYMENT REPORT TAB ── */
+.pay-report-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; margin-bottom:20px; }
+@media(max-width:768px){ .pay-report-grid{ grid-template-columns:1fr; } }
+.pay-stat-card {
+  background:var(--card); border:1px solid var(--border); border-radius:14px; padding:18px;
+}
+.pay-stat-title { font-family:'Noto Sans Thai',sans-serif; font-weight:700; font-size:.9rem; color:var(--text-dark); margin-bottom:14px; display:flex; align-items:center; gap:8px; }
+.pay-method-row {
+  display:flex; align-items:center; gap:10px; padding:8px 0;
+  border-bottom:1px solid var(--border);
+}
+.pay-method-row:last-child { border-bottom:none; }
+.pm-icon { font-size:1.3rem; flex-shrink:0; }
+.pm-name { font-family:'Noto Sans Thai',sans-serif; font-weight:600; font-size:.88rem; flex:1; color:var(--text-dark); }
+.pm-bar-wrap { flex:2; height:10px; background:var(--border); border-radius:99px; overflow:hidden; }
+.pm-bar-fill { height:100%; border-radius:99px; transition:width .6s; }
+.pm-amt { font-family:'Noto Sans Thai',sans-serif; font-weight:700; font-size:.88rem; color:var(--text-dark); white-space:nowrap; width:80px; text-align:right; }
+.pm-pct { font-size:.75rem; color:var(--muted); white-space:nowrap; width:40px; text-align:right; }
+.period-tabs { display:flex; gap:4px; margin-bottom:14px; }
+.period-tab {
+  font-family:'Noto Sans Thai',sans-serif; font-size:.8rem; font-weight:600;
+  background:var(--card2); border:1px solid var(--border); border-radius:8px;
+  color:var(--muted); padding:5px 12px; cursor:pointer; transition:all .18s;
+}
+.period-tab.active { background:var(--p); color:#fff; border-color:var(--p); }
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">🏫</div>
+  <div class="nav-title">
+    <h1>ระบบ POS โรงเรียน</h1>
+    <p>บริหารยอดขายไอติม &amp; ร้านค้า — 3 โรงเรียน</p>
+  </div>
+  <div class="nav-tabs">
+    <button class="tab-btn active" onclick="switchTab('entry')">📝 บันทึกขาย</button>
+    <button class="tab-btn" onclick="switchTab('analytics')">📊 วิเคราะห์</button>
+    <button class="tab-btn" onclick="switchTab('history')">📋 ประวัติ</button>
+    <button class="tab-btn" onclick="switchTab('payment')">💳 การชำระเงิน</button>
+  </div>
+  <div class="theme-switcher" title="เปลี่ยนธีม">
+    <div class="theme-dot td-lavender active" onclick="setTheme('lavender')" title="ม่วงอ่อน"></div>
+    <div class="theme-dot td-mint"     onclick="setTheme('mint')"     title="มิ้นท์"></div>
+    <div class="theme-dot td-peach"    onclick="setTheme('peach')"    title="พีช"></div>
+    <div class="theme-dot td-sky"      onclick="setTheme('sky')"      title="ฟ้า"></div>
+    <div class="theme-dot td-dark"     onclick="setTheme('dark')"     title="Dark"></div>
+  </div>
+</nav>
+
+<!-- ===== TAB: ENTRY ===== -->
+<div id="tab-entry" class="tab-panel active">
+
+  <div class="date-bar">
+    <label>📅 วันที่</label>
+    <input type="date" id="selDate">
+    <span class="date-thai" id="dateThai"></span>
+    <div class="gdiv" style="height:24px; margin:0 4px;"></div>
+    <label>🕐 ช่วงเวลา</label>
+    <select id="selSlot">
+      <option value="เช้า (06:00-10:00)">🌅 เช้า (06:00-10:00)</option>
+      <option value="สาย (10:00-12:00)" selected>🌤️ สาย (10:00-12:00)</option>
+      <option value="เที่ยง (12:00-14:00)">☀️ เที่ยง (12:00-14:00)</option>
+      <option value="บ่าย (14:00-16:00)">🌥️ บ่าย (14:00-16:00)</option>
+      <option value="เย็น (16:00-18:00)">🌆 เย็น (16:00-18:00)</option>
+    </select>
+    <div class="spacer"></div>
+    <button class="btn btn-ghost btn-sm" onclick="clearAll()">🗑️ ล้าง</button>
+  </div>
+
+  <div class="schools-grid">
+    <!-- School 1 -->
+    <div class="school-card" data-s="1">
+      <div class="school-hd">
+        <div>
+          <div class="school-nm">🏫 ร.ร.วัดดอนไก่ดี</div>
+          <div class="school-sub">โรงเรียนที่ 1</div>
+        </div>
+      </div>
+      <div class="card-tabs">
+        <button class="card-tab-btn active" onclick="switchCardTab(1,'ice')">🍦 ไอติม</button>
+        <button class="card-tab-btn" onclick="switchCardTab(1,'snack')">🍬 ขนม</button>
+        <button class="card-tab-btn" onclick="switchCardTab(1,'food')">🥙 อาหารว่าง</button>
+      </div>
+      <!-- ไอติม -->
+      <div class="card-tab-panel active" id="panel-1-ice">
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+          <span style="font-size:.7rem;color:var(--muted);font-family:'Noto Sans Thai',sans-serif;">ชื่อสินค้า / จำนวน / ราคาต่อชิ้น</span>
+          <button class="add-row-btn" onclick="addRow(1)">+ เพิ่ม</button>
+        </div>
+        <div class="items-list" id="list-1"></div>
+        <div class="sub-total-row"><span>ยอดไอติม</span><span id="sub-1-ice">฿0</span></div>
+      </div>
+      <!-- ขนม -->
+      <div class="card-tab-panel" id="panel-1-snack">
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+          <span style="font-size:.7rem;color:var(--muted);font-family:'Noto Sans Thai',sans-serif;">ชื่อสินค้า / จำนวน / ราคาต่อชิ้น</span>
+          <button class="add-row-btn" onclick="addShopRow('1s')">+ เพิ่ม</button>
+        </div>
+        <div class="items-list" id="list-1s"></div>
+        <div class="sub-total-row"><span>ยอดขนม</span><span id="sub-1-snack">฿0</span></div>
+      </div>
+      <!-- อาหารว่าง -->
+      <div class="card-tab-panel" id="panel-1-food">
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+          <span style="font-size:.7rem;color:var(--muted);font-family:'Noto Sans Thai',sans-serif;">ชื่อสินค้า / จำนวน / ราคาต่อชิ้น</span>
+          <button class="add-row-btn" onclick="addShopRow('1f')">+ เพิ่ม</button>
+        </div>
+        <div class="items-list" id="list-1f"></div>
+        <div class="sub-total-row"><span>ยอดอาหารว่าง</span><span id="sub-1-food">฿0</span></div>
+      </div>
+      <div class="school-grand-foot">
+        <span class="lbl">รวม ร.ร.วัดดอนไก่ดี</span>
+        <strong id="tot-1" style="color:var(--school1)">฿0</strong>
+      </div>
+    </div>
+
+    <!-- School 2 -->
+    <div class="school-card" data-s="2">
+      <div class="school-hd">
+        <div>
+          <div class="school-nm">🏫 ร.ร.วัดท่าพูด</div>
+          <div class="school-sub">โรงเรียนที่ 2</div>
+        </div>
+      </div>
+      <div class="card-tabs">
+        <button class="card-tab-btn active" onclick="switchCardTab(2,'ice')">🍦 ไอติม</button>
+        <button class="card-tab-btn" onclick="switchCardTab(2,'snack')">🍬 ขนม</button>
+        <button class="card-tab-btn" onclick="switchCardTab(2,'food')">🥙 อาหารว่าง</button>
+      </div>
+      <div class="card-tab-panel active" id="panel-2-ice">
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+          <span style="font-size:.7rem;color:var(--muted);font-family:'Noto Sans Thai',sans-serif;">ชื่อสินค้า / จำนวน / ราคาต่อชิ้น</span>
+          <button class="add-row-btn" onclick="addRow(2)">+ เพิ่ม</button>
+        </div>
+        <div class="items-list" id="list-2"></div>
+        <div class="sub-total-row"><span>ยอดไอติม</span><span id="sub-2-ice">฿0</span></div>
+      </div>
+      <div class="card-tab-panel" id="panel-2-snack">
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+          <span style="font-size:.7rem;color:var(--muted);font-family:'Noto Sans Thai',sans-serif;">ชื่อสินค้า / จำนวน / ราคาต่อชิ้น</span>
+          <button class="add-row-btn" onclick="addShopRow('2s')">+ เพิ่ม</button>
+        </div>
+        <div class="items-list" id="list-2s"></div>
+        <div class="sub-total-row"><span>ยอดขนม</span><span id="sub-2-snack">฿0</span></div>
+      </div>
+      <div class="card-tab-panel" id="panel-2-food">
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+          <span style="font-size:.7rem;color:var(--muted);font-family:'Noto Sans Thai',sans-serif;">ชื่อสินค้า / จำนวน / ราคาต่อชิ้น</span>
+          <button class="add-row-btn" onclick="addShopRow('2f')">+ เพิ่ม</button>
+        </div>
+        <div class="items-list" id="list-2f"></div>
+        <div class="sub-total-row"><span>ยอดอาหารว่าง</span><span id="sub-2-food">฿0</span></div>
+      </div>
+      <div class="school-grand-foot">
+        <span class="lbl">รวม ร.ร.วัดท่าพูด</span>
+        <strong id="tot-2" style="color:var(--school2)">฿0</strong>
+      </div>
+    </div>
+
+    <!-- School 3 -->
+    <div class="school-card" data-s="3">
+      <div class="school-hd">
+        <div>
+          <div class="school-nm">🏫 ร.ร.พระตำหนักสวนกุหลาบ</div>
+          <div class="school-sub">โรงเรียนที่ 3</div>
+        </div>
+      </div>
+      <div class="card-tabs">
+        <button class="card-tab-btn active" onclick="switchCardTab(3,'ice')">🍦 ไอติม</button>
+        <button class="card-tab-btn" onclick="switchCardTab(3,'snack')">🍬 ขนม</button>
+        <button class="card-tab-btn" onclick="switchCardTab(3,'food')">🥙 อาหารว่าง</button>
+      </div>
+      <div class="card-tab-panel active" id="panel-3-ice">
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+          <span style="font-size:.7rem;color:var(--muted);font-family:'Noto Sans Thai',sans-serif;">ชื่อสินค้า / จำนวน / ราคาต่อชิ้น</span>
+          <button class="add-row-btn" onclick="addRow(3)">+ เพิ่ม</button>
+        </div>
+        <div class="items-list" id="list-3"></div>
+        <div class="sub-total-row"><span>ยอดไอติม</span><span id="sub-3-ice">฿0</span></div>
+      </div>
+      <div class="card-tab-panel" id="panel-3-snack">
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+          <span style="font-size:.7rem;color:var(--muted);font-family:'Noto Sans Thai',sans-serif;">ชื่อสินค้า / จำนวน / ราคาต่อชิ้น</span>
+          <button class="add-row-btn" onclick="addShopRow('3s')">+ เพิ่ม</button>
+        </div>
+        <div class="items-list" id="list-3s"></div>
+        <div class="sub-total-row"><span>ยอดขนม</span><span id="sub-3-snack">฿0</span></div>
+      </div>
+      <div class="card-tab-panel" id="panel-3-food">
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+          <span style="font-size:.7rem;color:var(--muted);font-family:'Noto Sans Thai',sans-serif;">ชื่อสินค้า / จำนวน / ราคาต่อชิ้น</span>
+          <button class="add-row-btn" onclick="addShopRow('3f')">+ เพิ่ม</button>
+        </div>
+        <div class="items-list" id="list-3f"></div>
+        <div class="sub-total-row"><span>ยอดอาหารว่าง</span><span id="sub-3-food">฿0</span></div>
+      </div>
+      <div class="school-grand-foot">
+        <span class="lbl">รวม ร.ร.สวนกุหลาบ</span>
+        <strong id="tot-3" style="color:var(--school3)">฿0</strong>
+      </div>
+    </div>
+  </div>
+
+  <meta charset="UTF-8">
+  <title>ระบบชำระเงิน</title>
+  
+  <style>
+    /* ─── 1. ส่วนของ CSS (ตกแต่งหน้าตา) ─── */
+    body {
+      background-color: #0f172a; /* พื้นหลังเข้มเพื่อให้เห็นปุ่มชัด */
+      font-family: sans-serif;
+      padding: 20px;
+    }
+
+    .pay-bar {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 15px;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      background: #1e293b;
+      color: white;
+    }
+
+    .pay-label {
+      font-weight: bold;
+    }
+
+    .pay-btns {
+      display: flex;
+      gap: 10px;
+    }
+
+    /* สไตล์ปุ่มปกติ */
+    .pay-btn {
+      padding: 8px 16px;
+      border: 1px solid #475569;
+      background: transparent;
+      color: #94a3b8;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+      font-size: 14px;
+    }
+
+    /* เมื่อปุ่มถูกเลือก (Active) */
+    .pay-btn.active {
+      border: 2px solid #a855f7; /* ขอบสีม่วง */
+      color: #ffffff;
+      background-color: rgba(168, 85, 247, 0.2);
+      box-shadow: 0 0 10px rgba(168, 85, 247, 0.3);
+    }
+
+    /* ส่วนของข้อความ "เลือกได้เพียงวิธีเดียว" */
+    .pay-split-note {
+      margin-left: auto; /* ดันไปขวาสุด */
+      font-size: 16px;   /* ขยายขนาดตามที่คุณต้องการ */
+      font-weight: bold;
+      /* สีจะปรับตามธีม (ตัวอย่างนี้เป็นสีขาวเพราะพื้นหลังเข้ม) */
+      color: #ffffff; 
+    }
+    
+    /* ตัวอย่างถ้าเป็นธีมสว่าง (สมมติใส่ class light-theme ที่ body) */
+    .light-theme .pay-split-note {
+      color: #000000;
+    }
+  </style>
+</head>
+<body>
+  <!-- ── การชำระเงิน ── -->
+ <div class="pay-bar">
+  <div class="pay-label">💳 วิธีชำระเงินรอบนี้</div>
+  <div class="pay-btns">
+    <button class="pay-btn active" data-pay="cash" onclick="selectPay(this)">💵 เงินสด</button>
+    <button class="pay-btn" data-pay="transfer" onclick="selectPay(this)">📲 โอนเงิน</button>
+    <button class="pay-btn" data-pay="qr" onclick="selectPay(this)">📱 QR Code</button>
+  </div>
+  <span class="pay-split-note">เลือกได้เพียงวิธีเดียว</span>
+</div>
+
+<script>
+function selectPay(element) {
+  // 1. หาปุ่มทั้งหมดที่มีคลาส .pay-btn
+  const buttons = document.querySelectorAll('.pay-btn');
+  
+  // 2. เอาคลาส 'active' ออกจากทุกปุ่มก่อน เพื่อล้างสถานะเดิม
+  buttons.forEach(btn => {
+    btn.classList.remove('active');
+  });
+  
+  // 3. ใส่คลาส 'active' ให้เฉพาะปุ่มที่เราเพิ่งคลิกไป
+  element.classList.add('active');
+  
+  // ดูผลลัพธ์ใน Console (กด F12 เพื่อดู)
+  const selectedMethod = element.getAttribute('data-pay');
+  console.log("คุณเลือกวิธีชำระเงินแบบ:", selectedMethod);
+}
+</script>
+
+  <!-- Grand total bar -->
+  <div class="grand-bar">
+    <div class="gstat main">
+      <label>🏆 ยอดรวมทั้งหมด (3 รร.)</label>
+      <div class="gval" id="grandTotal">฿0</div>
+    </div>
+    <div class="gdiv"></div>
+    <div class="gstat">
+      <label>📍 วัดดอนไก่ดี</label>
+      <div class="gval" style="font-size:1.05rem;color:var(--school1)" id="gs1">฿0</div>
+    </div>
+    <div class="gstat">
+      <label>📍 วัดท่าพูด</label>
+      <div class="gval" style="font-size:1.05rem;color:var(--school2)" id="gs2">฿0</div>
+    </div>
+    <div class="gstat">
+      <label>📍 สวนกุหลาบ</label>
+      <div class="gval" style="font-size:1.05rem;color:var(--school3)" id="gs3">฿0</div>
+    </div>
+    <div class="bar-actions">
+      <button class="btn btn-ghost" onclick="openSeedModal()">🌱 ข้อมูลทดสอบ</button>
+      <button class="btn btn-green" onclick="saveRecord()">💾 บันทึกยอดขาย</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===== TAB: ANALYTICS ===== -->
+<div id="tab-analytics" class="tab-panel">
+  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;align-items:center;">
+    <span style="font-family:'Noto Sans Thai',sans-serif;font-size:.88rem;color:var(--muted);">ช่วงข้อมูล:</span>
+    <select class="filter-sel" id="anaRange" onchange="renderAnalytics()">
+      <option value="7">7 วันล่าสุด</option>
+      <option value="14">14 วันล่าสุด</option>
+      <option value="30">30 วันล่าสุด</option>
+      <option value="all">ทั้งหมด</option>
+    </select>
+    <div class="spacer"></div>
+    <button class="btn btn-excel" onclick="exportExcel()">📊 ส่งออก Excel</button>
+  </div>
+
+  <div class="analytics-grid">
+    <div class="ana-card">
+      <div class="ana-title"><div class="dot" style="background:var(--warn)"></div>🏅 สินค้าขายดีสุด — ทุกหมวด (จำนวนชิ้น)</div>
+      <div id="rankQty" class="rank-list"></div>
+    </div>
+    <div class="ana-card">
+      <div class="ana-title"><div class="dot" style="background:var(--success)"></div>💰 สินค้ารายได้สูงสุด — ทุกหมวด</div>
+      <div id="rankRev" class="rank-list"></div>
+    </div>
+    <div class="ana-card">
+      <div class="ana-title"><div class="dot" style="background:var(--p)"></div>🕐 ช่วงเวลาที่ขายดี</div>
+      <div id="timeBars" class="time-chart-container"></div>
+      <div id="timePeak" style="margin-top:8px; font-size:.8rem; color:var(--muted2);"></div>
+    </div>
+    <div class="ana-card">
+      <div class="ana-title"><div class="dot" style="background:var(--s4)"></div>🏫 เปรียบเทียบรร.</div>
+      <div id="schoolComp"></div>
+    </div>
+    <div class="ana-card full">
+      <div class="ana-title"><div class="dot" style="background:var(--s1)"></div>📈 แนวโน้มยอดขายรายวัน (7 วันล่าสุด)</div>
+      <div id="weekBars" class="week-chart-wrap"></div>
+      <div class="week-axis-line"></div>
+      <div style="display:flex;gap:16px;margin-top:10px;flex-wrap:wrap;align-items:center;">
+        <span style="font-size:.75rem;color:var(--muted);display:flex;align-items:center;gap:5px;"><span style="width:12px;height:12px;border-radius:3px;background:var(--school1);display:inline-block;"></span>วัดดอนไก่ดี</span>
+        <span style="font-size:.75rem;color:var(--muted);display:flex;align-items:center;gap:5px;"><span style="width:12px;height:12px;border-radius:3px;background:var(--school2);display:inline-block;"></span>วัดท่าพูด</span>
+        <span style="font-size:.75rem;color:var(--muted);display:flex;align-items:center;gap:5px;"><span style="width:12px;height:12px;border-radius:3px;background:var(--school3);display:inline-block;"></span>สวนกุหลาบ</span>
+        <span id="weekSummary" style="margin-left:auto;font-family:'Noto Sans Thai',sans-serif;font-size:.78rem;color:var(--muted2);"></span>
+      </div>
+    </div>
+    <div class="ana-card full">
+      <div class="ana-title"><div class="dot" style="background:var(--success)"></div>🧠 คำแนะนำสต๊อก & การซื้อสินค้า</div>
+      <div id="recCards" class="rec-grid"></div>
+    </div>
+    <div class="ana-card full">
+      <div class="ana-title"><div class="dot" style="background:var(--p2)"></div>💡 สรุปและข้อเสนอแนะรายวัน</div>
+      <div id="dailyInsights"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TAB: HISTORY ===== -->
+<div id="tab-history" class="tab-panel">
+  <div class="hist-toolbar">
+    <input class="search-box" id="histSearch" placeholder="🔍 ค้นหาชื่อสินค้า/วันที่…" oninput="renderHistory()">
+    <select class="filter-sel" id="histSchool" onchange="renderHistory()">
+      <option value="">ทุกร้าน/โรงเรียน</option>
+      <option value="1">ร.ร.วัดดอนไก่ดี</option>
+      <option value="2">ร.ร.วัดท่าพูด</option>
+      <option value="3">ร.ร.พระตำหนักสวนกุหลาบ</option>
+      <option value="4">🍬 ร้านขนมและเครื่องดื่ม</option>
+      <option value="5">🥙 ร้านอาหารว่าง</option>
+    </select>
+    <select class="filter-sel" id="histSlot" onchange="renderHistory()">
+      <option value="">ทุกช่วงเวลา</option>
+      <option value="เช้า">เช้า</option>
+      <option value="สาย">สาย</option>
+      <option value="เที่ยง">เที่ยง</option>
+      <option value="บ่าย">บ่าย</option>
+      <option value="เย็น">เย็น</option>
+    </select>
+    <div class="spacer"></div>
+    <span id="histCount" style="font-family:'Noto Sans Thai',sans-serif;font-size:.82rem;color:var(--muted);"></span>
+    <button class="btn btn-excel" onclick="exportExcel()">📊 Export Excel</button>
+  </div>
+  <div class="hist-table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th onclick="sortBy('date')">วันที่ <span class="sort-arrow" id="arr-date"></span></th>
+          <th onclick="sortBy('slot')">ช่วงเวลา <span class="sort-arrow" id="arr-slot"></span></th>
+          <th onclick="sortBy('school')">โรงเรียน <span class="sort-arrow" id="arr-school"></span></th>
+          <th>รายการสินค้า</th>
+          <th onclick="sortBy('total')" style="text-align:right;">ยอดรวม <span class="sort-arrow" id="arr-total"></span></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="histBody"></tbody>
+    </table>
+  </div>
+  <div class="pagination" id="pagination"></div>
+</div>
+
+<!-- ===== TAB: PAYMENT ===== -->
+<div id="tab-payment" class="tab-panel">
+  <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px;">
+    <div class="period-tabs">
+      <button class="period-tab active" onclick="setPeriod('day',this)">รายวัน</button>
+      <button class="period-tab" onclick="setPeriod('month',this)">รายเดือน</button>
+      <button class="period-tab" onclick="setPeriod('year',this)">รายปี</button>
+    </div>
+    <input type="month" id="payMonthPicker" style="display:none;background:var(--card);border:1px solid var(--border2);border-radius:9px;color:var(--text-dark);font-family:'Noto Sans Thai',sans-serif;font-size:.85rem;padding:6px 12px;outline:none;">
+    <div class="spacer"></div>
+    <button class="btn btn-excel" onclick="exportPaymentExcel()">📊 Export สรุปการชำระเงิน</button>
+  </div>
+
+  <div class="pay-report-grid">
+    <!-- Summary cards -->
+    <div class="pay-stat-card" style="grid-column:1/-1;">
+      <div style="display:flex;gap:16px;flex-wrap:wrap;" id="paySummaryCards"></div>
+    </div>
+    <!-- Method breakdown -->
+    <div class="pay-stat-card">
+      <div class="pay-stat-title">💳 สัดส่วนการชำระเงิน</div>
+      <div id="payMethodBreakdown"></div>
+    </div>
+    <!-- Daily chart -->
+    <div class="pay-stat-card">
+      <div class="pay-stat-title">📈 ยอดรายวัน แยกวิธีชำระ</div>
+      <div id="payDailyChart" style="height:120px;display:flex;align-items:flex-end;gap:5px;"></div>
+    </div>
+    <!-- Per-school payment -->
+    <div class="pay-stat-card" style="grid-column:1/-1;">
+      <div class="pay-stat-title">🏫 แยกตามโรงเรียน × วิธีชำระเงิน</div>
+      <div id="paySchoolBreakdown"></div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /page -->
+
+<div class="toast" id="toast"></div>
+
+<div class="modal-bg" id="seedModal">
+  <div class="modal">
+    <div class="modal-title">🌱 เพิ่มข้อมูลทดสอบ <button class="modal-close" onclick="closeModal('seedModal')">✕</button></div>
+    <p style="font-size:.85rem;color:var(--muted2);margin-bottom:18px;line-height:1.6;">ระบบจะสร้างข้อมูลตัวอย่าง 14 วันให้อัตโนมัติ เพื่อให้เห็นกราฟและการวิเคราะห์ครบถ้วน</p>
+    <div style="display:flex;gap:10px;justify-content:flex-end;">
+      <button class="btn btn-ghost" onclick="closeModal('seedModal')">ยกเลิก</button>
+      <button class="btn btn-blue" onclick="seedData()">✅ สร้างข้อมูลทดสอบ</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// listIds: ice=1,2,3 | snack=1s,2s,3s | food=1f,2f,3f
+const SCHOOLS = {1:'ร.ร.วัดดอนไก่ดี', 2:'ร.ร.วัดท่าพูด', 3:'ร.ร.พระตำหนักสวนกุหลาบ'};
+const CAT_NAMES = {ice:'ไอติม', snack:'ขนม', food:'อาหารว่าง'};
+const ALL_LISTS = ['1','2','3','1s','2s','3s','1f','2f','3f'];
+const MONTHS = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+let records = JSON.parse(localStorage.getItem('icepro_records') || '[]');
+let rowCounts = {};
+ALL_LISTS.forEach(id => rowCounts[id] = 0);
+let sortState = {key:'date', dir:-1};
+let histPage = 1;
+const PAGE_SIZE = 12;
+let knownProducts = JSON.parse(localStorage.getItem('icepro_products') || '[]');
+
+function init() {
+  const today = new Date().toISOString().slice(0,10);
+  document.getElementById('selDate').value = today;
+  updateDateThai(today);
+  document.getElementById('selDate').addEventListener('change', e => updateDateThai(e.target.value));
+  [1,2,3].forEach(s => addRow(s));
+  ['1s','2s','3s','1f','2f','3f'].forEach(id => addShopRow(id));
+  renderHistory();
+  const savedTheme = localStorage.getItem('icepro_theme') || 'lavender';
+  setTheme(savedTheme);
+}
+
+function updateDateThai(iso) {
+  const [y,m,d] = iso.split('-');
+  document.getElementById('dateThai').textContent = `${+d} ${MONTHS[+m-1]} ${+y+543}`;
+}
+
+function switchTab(t) {
+  document.querySelectorAll('.tab-btn').forEach((b,i) => {
+    b.classList.toggle('active', ['entry','analytics','history','payment'][i] === t);
+  });
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('tab-'+t).classList.add('active');
+  if (t === 'analytics') renderAnalytics();
+  if (t === 'history') renderHistory();
+  if (t === 'payment') renderPaymentReport();
+}
+
+function switchCardTab(school, cat) {
+  ['ice','snack','food'].forEach(c => {
+    const panel = document.getElementById(`panel-${school}-${c}`);
+    if (panel) panel.classList.toggle('active', c === cat);
+  });
+  const btns = document.querySelectorAll(`.school-card[data-s="${school}"] .card-tab-btn`);
+  btns.forEach((b,i) => b.classList.toggle('active', ['ice','snack','food'][i] === cat));
+}
+
+function addRow(s, name='', qty='', price='') {
+  const listId = String(s);
+  rowCounts[listId] = (rowCounts[listId]||0) + 1;
+  const id = `r${listId}_${rowCounts[listId]}`;
+  const wrap = document.createElement('div');
+  wrap.className = 'item-row'; wrap.id = id;
+  wrap.innerHTML = `
+    <div class="autocomplete-wrap">
+      <input type="text" placeholder="ชื่อไอติม…" value="${name}"
+        oninput="onNameInput(this,'${listId}')" onblur="hideSug(this)"
+        onfocus="onNameInput(this,'${listId}')" onkeydown="onNameKey(event,this)">
+      <div class="suggestions" id="sug_${id}"></div>
+    </div>
+    <input type="number" placeholder="0" min="0" step="1" value="${qty}" oninput="calcSchoolTotal(${s})" class="qty-inp">
+    <input type="number" placeholder="0" min="0" step="1" value="${price}" oninput="calcSchoolTotal(${s})" class="price-inp">
+    <button class="del-btn" onclick="delRow('${id}',${s})">✕</button>`;
+  document.getElementById('list-'+listId).appendChild(wrap);
+  if (name) calcSchoolTotal(s);
+}
+
+function addShopRow(listId, name='', qty='', price='') {
+  listId = String(listId);
+  rowCounts[listId] = (rowCounts[listId]||0) + 1;
+  const school = parseInt(listId);
+  const id = `r${listId}_${rowCounts[listId]}`;
+  const wrap = document.createElement('div');
+  wrap.className = 'item-row'; wrap.id = id;
+  wrap.innerHTML = `
+    <div class="autocomplete-wrap">
+      <input type="text" placeholder="ชื่อสินค้า…" value="${name}"
+        oninput="onNameInput(this,'${listId}')" onblur="hideSug(this)"
+        onfocus="onNameInput(this,'${listId}')" onkeydown="onNameKey(event,this)">
+      <div class="suggestions" id="sug_${id}"></div>
+    </div>
+    <input type="number" placeholder="0" min="0" step="1" value="${qty}" oninput="calcSchoolTotal('${listId}'.charCodeAt(0)-48)" class="qty-inp">
+    <input type="number" placeholder="0" min="0" step="1" value="${price}" oninput="calcSchoolTotal('${listId}'.charCodeAt(0)-48)" class="price-inp">
+    <button class="del-btn" onclick="delRow('${id}','${listId}')">✕</button>`;
+  document.getElementById('list-'+listId).appendChild(wrap);
+}
+
+function delRow(id, s) {
+  document.getElementById(id)?.remove();
+  const school = parseInt(String(s));
+  if (!isNaN(school)) calcSchoolTotal(school);
+}
+
+function getListTotal(listId) {
+  const cont = document.getElementById('list-'+listId);
+  if (!cont) return 0;
+  let t = 0;
+  cont.querySelectorAll('.item-row').forEach(row => {
+    t += (parseFloat(row.querySelector('.qty-inp')?.value)||0) *
+         (parseFloat(row.querySelector('.price-inp')?.value)||0);
+  });
+  return t;
+}
+
+function getListItems(listId) {
+  const cont = document.getElementById('list-'+listId);
+  if (!cont) return [];
+  const items = [];
+  cont.querySelectorAll('.item-row').forEach(row => {
+    const name = row.querySelector('input[type="text"]')?.value.trim()||'';
+    const qty  = parseFloat(row.querySelector('.qty-inp')?.value)||0;
+    const price= parseFloat(row.querySelector('.price-inp')?.value)||0;
+    if (name||qty) items.push({name,qty,price,sub:qty*price});
+  });
+  return items;
+}
+
+function calcSchoolTotal(school) {
+  school = parseInt(String(school));
+  if (isNaN(school)||school<1||school>3) return;
+  const ice   = getListTotal(String(school));
+  const snack = getListTotal(school+'s');
+  const food  = getListTotal(school+'f');
+  const total = ice+snack+food;
+  const fmt = n => '฿'+n.toLocaleString('th-TH',{maximumFractionDigits:0});
+  const set = (id,v) => { const el=document.getElementById(id); if(el) el.textContent=v; };
+  set('sub-'+school+'-ice',   fmt(ice));
+  set('sub-'+school+'-snack', fmt(snack));
+  set('sub-'+school+'-food',  fmt(food));
+  set('tot-'+school,          fmt(total));
+  set('gs'+school,            fmt(total));
+  const gt=[1,2,3].reduce((a,s)=>a+getListTotal(String(s))+getListTotal(s+'s')+getListTotal(s+'f'),0);
+  set('grandTotal', fmt(gt));
+}
+
+function saveRecord() {
+  const date = document.getElementById('selDate').value;
+  const slot = document.getElementById('selSlot').value;
+  if (!date) return showToast('❌ เลือกวันที่ก่อนนะคะ','err');
+  let hasData = false;
+  ALL_LISTS.forEach(id => { if (getListItems(id).length) hasData = true; });
+  if (!hasData) return showToast('❌ ยังไม่มีรายการสินค้า','err');
+  records = records.filter(r => !(r.date===date && r.slot===slot));
+  const catMap = {ice:'ไอติม',snack:'ขนม',food:'อาหารว่าง'};
+  [1,2,3].forEach(school => {
+    [{id:String(school),cat:'ไอติม'},{id:school+'s',cat:'ขนม'},{id:school+'f',cat:'อาหารว่าง'}]
+    .forEach(({id,cat}) => {
+      const items = getListItems(id);
+      if (!items.length) return;
+      records.push({
+        date, slot, school,
+        schoolName: SCHOOLS[school],
+        category: cat,
+        items,
+        total: items.reduce((a,b)=>a+b.sub,0),
+        saved: Date.now()+Math.random()*1e5
+      });
+    });
+  });
+  records.sort((a,b)=>b.date.localeCompare(a.date)||a.slot.localeCompare(b.slot));
+  localStorage.setItem('icepro_records', JSON.stringify(records));
+  showToast('✅ บันทึกยอดขายเรียบร้อยแล้ว!','ok');
+  renderHistory();
+}
+
+function clearAll() {
+  ALL_LISTS.forEach(id => {
+    const el = document.getElementById('list-'+id);
+    if (el) el.innerHTML = '';
+    rowCounts[id] = 0;
+  });
+  [1,2,3].forEach(s => { addRow(s); calcSchoolTotal(s); });
+  ['1s','2s','3s','1f','2f','3f'].forEach(id => addShopRow(id));
+}
+
+
+function onNameInput(inp, s) {
+  const val = inp.value.trim().toLowerCase();
+  const sugEl = inp.closest('.autocomplete-wrap').querySelector('.suggestions');
+  if (!val) { sugEl.classList.remove('open'); return; }
+  const all = getAllProducts();
+  const matches = all.filter(p => p.name.toLowerCase().includes(val)).slice(0, 7);
+  if (!matches.length) { sugEl.classList.remove('open'); return; }
+  sugEl.innerHTML = matches.map((p, i) =>
+    `<div class="sug-item" data-idx="${i}" data-name="${p.name}" data-price="${p.avgPrice}"
+      onmousedown="pickSug(event, this)">
+      <span class="sug-name">${p.name}</span>
+      <span class="sug-price">฿${p.avgPrice} avg</span>
+    </div>`
+  ).join('');
+  sugEl.classList.add('open');
+  
+}
+
+function onNameKey(e, inp) {
+  const sug = inp.closest('.autocomplete-wrap').querySelector('.suggestions');
+  const items = sug.querySelectorAll('.sug-item');
+  const focused = sug.querySelector('.focused');
+  if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    const next = focused ? focused.nextElementSibling : items[0];
+    if (next) { focused?.classList.remove('focused'); next.classList.add('focused'); }
+  } else if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    const prev = focused?.previousElementSibling;
+    if (prev) { focused.classList.remove('focused'); prev.classList.add('focused'); }
+  } else if (e.key === 'Enter' && focused) {
+    e.preventDefault();
+    pickSug(null, focused, inp);
+  } else if (e.key === 'Escape') {
+    sug.classList.remove('open');
+  }
+}
+
+function pickSug(e, el, inpRef) {
+  if (e) e.preventDefault();
+  const row = (inpRef || el).closest('.item-row');
+  const nameInp = row.querySelector('input[type="text"]');
+  const priceInp = row.querySelector('.price-inp');
+  nameInp.value = el.dataset.name;
+  if (!priceInp.value) priceInp.value = el.dataset.price;
+  el.closest('.suggestions').classList.remove('open');
+  const s = parseInt(row.id.split('_')[0].replace('r',''));
+  
+}
+
+function hideSug(inp) {
+  setTimeout(() => inp.closest('.autocomplete-wrap').querySelector('.suggestions').classList.remove('open'), 150);
+}
+
+function getAllProducts() {
+  const map = {};
+  records.forEach(r => {
+    r.items.forEach(it => {
+      if (!it.name) return;
+      if (!map[it.name]) map[it.name] = {name:it.name, total:0, count:0};
+      map[it.name].total += it.price;
+      map[it.name].count++;
+    });
+  });
+  return Object.values(map)
+    .map(p => ({name:p.name, avgPrice: +(p.total/p.count).toFixed(1)}))
+    .sort((a,b) => b.count - a.count);
+}
+
+function getSchoolData(s) {
+  const rows = document.getElementById('list-'+s).querySelectorAll('.item-row');
+  let total = 0, items = [];
+  rows.forEach(row => {
+    const name = row.querySelector('input[type="text"]').value.trim();
+    const qty = parseFloat(row.querySelector('.qty-inp').value) || 0;
+    const price = parseFloat(row.querySelector('.price-inp').value) || 0;
+    const sub = qty * price;
+    total += sub;
+    if (name || qty) items.push({name, qty, price, sub});
+  });
+  return {total, items};
+}
+
+function calcTotal(s) {
+  const {total} = getSchoolData(s);
+  const fmt = n => '฿' + n.toLocaleString('th-TH', {minimumFractionDigits:0, maximumFractionDigits:2});
+  document.getElementById('tot-'+s).textContent = fmt(total);
+  const gsEl = document.getElementById('gs'+s);
+  if (gsEl) gsEl.textContent = fmt(total);
+  const gt = [1,2,3,4,5].reduce((a, sc) => {
+    const el = document.getElementById('list-'+sc);
+    return a + (el ? getSchoolData(sc).total : 0);
+  }, 0);
+  document.getElementById('grandTotal').textContent = fmt(gt);
+}
+
+function renderHistory() {
+  const q = document.getElementById('histSearch').value.toLowerCase();
+  const sf = document.getElementById('histSchool').value;
+  const tf = document.getElementById('histSlot').value;
+  let filtered = records.filter(r => {
+    if (sf && String(r.school) !== sf) return false;
+    if (tf && !r.slot?.includes(tf)) return false;
+    if (q) {
+      const match = r.schoolName?.toLowerCase().includes(q) ||
+        r.date?.includes(q) ||
+        r.items?.some(i => i.name?.toLowerCase().includes(q)) ||
+        r.slot?.toLowerCase().includes(q);
+      if (!match) return false;
+    }
+    return true;
+  });
+  filtered.sort((a,b) => {
+    if (sortState.key === 'date') return sortState.dir * a.date.localeCompare(b.date);
+    if (sortState.key === 'total') return sortState.dir * (a.total - b.total);
+    if (sortState.key === 'school') return sortState.dir * (a.school - b.school);
+    return sortState.dir * String(a[sortState.key]).localeCompare(String(b[sortState.key]));
+  });
+  document.getElementById('histCount').textContent = `${filtered.length} รายการ`;
+  const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
+  if (histPage > totalPages) histPage = 1;
+  const page = filtered.slice((histPage-1)*PAGE_SIZE, histPage*PAGE_SIZE);
+  const tbody = document.getElementById('histBody');
+  if (!page.length) {
+    tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><div class="es-icon">🔍</div><div style="font-size:.95rem;font-weight:600;margin-bottom:4px;">ไม่พบรายการที่ตรงกัน</div><div style="font-size:.82rem;">ลองเปลี่ยนคำค้นหา หรือเลือกตัวกรองใหม่นะคะ</div></div></td></tr>`;
+  } else {
+    tbody.innerHTML = page.map(r => {
+      const [y,m,d] = r.date.split('-');
+      const thDate = `${+d} ${MONTHS[+m-1]} ${+y+543}`;
+      const chips = r.items.map(i => {
+        const name = i.name||'?';
+        const qty = i.qty||0;
+        const price = i.price||0;
+        const sub = i.sub||(qty*price);
+        return `<div class="item-chip-detail">
+          <span class="icd-name">${name}</span>
+          <span class="icd-meta">ราคาต่อชิ้น ฿${price} · ขายได้ ${qty} ชิ้น</span>
+          <span class="icd-sub">= ฿${sub.toLocaleString('th-TH',{maximumFractionDigits:0})}</span>
+        </div>`;
+      }).join('');
+      const slotIcon = {เช้า:'🌅',สาย:'🌤️',เที่ยง:'☀️',บ่าย:'🌥️',เย็น:'🌆'};
+      const si = Object.entries(slotIcon).find(([k]) => r.slot?.includes(k));
+      return `
+        <tr>
+          <td style="font-family:'Noto Sans Thai',sans-serif;font-weight:500;white-space:nowrap;">${thDate}</td>
+          <td style="font-size:.82rem;color:var(--muted2);white-space:nowrap;">${si?si[0]+' ':''+(r.slot||'—')}</td>
+          <td><span class="tag tag-${r.school}">${r.schoolName}</span> ${r.category ? `<span style="font-size:.7rem;color:var(--muted);margin-left:3px;">${r.category}</span>` : ""}</td>
+          <td><div class="item-chips-detail">${chips}</div></td>
+          <td class="amt" style="text-align:right;white-space:nowrap;">
+            ฿${r.total.toLocaleString('th-TH',{minimumFractionDigits:0,maximumFractionDigits:2})}
+            <div style="margin-top:3px;">${(r.payMethods||['cash']).map(m => {
+              const c = {cash:'#059669',transfer:'#3b82f6',qr:'#7c3aed',credit:'#d97706'};
+              const l = {cash:'💵 สด',transfer:'📲 โอน',qr:'📱 QR',credit:'💳 บัตร'};
+              return `<span style="font-size:.68rem;background:${c[m]}22;color:${c[m]};border:1px solid ${c[m]}44;border-radius:5px;padding:1px 5px;margin-left:2px;font-family:'Noto Sans Thai',sans-serif;">${l[m]||m}</span>`;
+            }).join('')}</div>
+          </td>
+          <td><button class="del-btn" onclick="delRecord(${r.saved})">✕</button></td>
+        </tr>`;
+    }).join('');
+  }
+  renderPagination(totalPages);
+  ['date','slot','school','total'].forEach(k => {
+    const el = document.getElementById('arr-'+k);
+    if (el) el.textContent = sortState.key===k ? (sortState.dir===1?'↑':'↓') : '↕';
+  });
+}
+
+function renderPagination(total) {
+  const pg = document.getElementById('pagination');
+  if (total <= 1) { pg.innerHTML=''; return; }
+  let html = `<button class="pg-btn" onclick="goPage(${histPage-1})" ${histPage<=1?'disabled':''}>‹</button>`;
+  for (let i=1;i<=total;i++) {
+    if (total>7 && i>2 && i<total-1 && Math.abs(i-histPage)>1) {
+      if (i===3||i===total-2) html += `<span style="color:var(--muted);padding:0 4px;">…</span>`;
+      continue;
+    }
+    html += `<button class="pg-btn ${i===histPage?'active':''}" onclick="goPage(${i})">${i}</button>`;
+  }
+  html += `<button class="pg-btn" onclick="goPage(${histPage+1})" ${histPage>=total?'disabled':''}>›</button>`;
+  pg.innerHTML = html;
+}
+
+function goPage(p) { histPage = p; renderHistory(); }
+
+function sortBy(k) {
+  if (sortState.key === k) sortState.dir *= -1;
+  else { sortState.key = k; sortState.dir = k==='total' ? -1 : 1; }
+  renderHistory();
+}
+
+function delRecord(saved) {
+  records = records.filter(r => r.saved !== saved);
+  localStorage.setItem('icepro_records', JSON.stringify(records));
+  renderHistory();
+  showToast('🗑️ ลบรายการแล้ว','info');
+}
+
+function getFilteredRecords() {
+  const range = document.getElementById('anaRange').value;
+  if (range === 'all') return records;
+  const cutoff = new Date(); cutoff.setDate(cutoff.getDate() - +range);
+  const iso = cutoff.toISOString().slice(0,10);
+  return records.filter(r => r.date >= iso);
+}
+
+function renderAnalytics() {
+  const recs = getFilteredRecords();
+  renderProductRank(recs);
+  renderTimeChart(recs);
+  renderSchoolComp(recs);
+  renderWeekChart();
+  renderRecommendations(recs);
+  renderInsights(recs);
+}
+
+function renderProductRank(recs) {
+  const map = {};
+  recs.forEach(r => r.items.forEach(it => {
+    if (!it.name) return;
+    if (!map[it.name]) map[it.name] = {name:it.name, qty:0, rev:0};
+    map[it.name].qty += it.qty;
+    map[it.name].rev += it.sub || it.qty*it.price;
+  }));
+  const arr = Object.values(map);
+  const byQty = [...arr].sort((a,b)=>b.qty-a.qty).slice(0,8);
+  const byRev = [...arr].sort((a,b)=>b.rev-a.rev).slice(0,8);
+  const maxQ = byQty[0]?.qty || 1;
+  const maxR = byRev[0]?.rev || 1;
+  const medals = ['rank-n1','rank-n2','rank-n3'];
+  const colors = ['#fbbf24','#9ca3af','#b45309'];
+  document.getElementById('rankQty').innerHTML = byQty.length ? byQty.map((p,i)=>`
+    <div class="rank-item">
+      <div class="rank-num ${medals[i]||'rank-nX'}">${i<3?['🥇','🥈','🥉'][i]:i+1}</div>
+      <div class="rank-name">${p.name}</div>
+      <div class="rank-bar-wrap"><div class="rank-bar-fill" style="width:${p.qty/maxQ*100}%;background:${colors[i]||'var(--p)'}"></div></div>
+      <div class="rank-qty">${p.qty} ชิ้น</div>
+    </div>`).join('') : '<div style="color:var(--muted);font-size:.85rem;padding:20px 0;text-align:center;">ยังไม่มีข้อมูล</div>';
+  document.getElementById('rankRev').innerHTML = byRev.length ? byRev.map((p,i)=>`
+    <div class="rank-item">
+      <div class="rank-num ${medals[i]||'rank-nX'}">${i<3?['🥇','🥈','🥉'][i]:i+1}</div>
+      <div class="rank-name">${p.name}</div>
+      <div class="rank-bar-wrap"><div class="rank-bar-fill" style="width:${p.rev/maxR*100}%;background:var(--success)"></div></div>
+      <div class="rank-rev">฿${p.rev.toLocaleString('th-TH',{minimumFractionDigits:0,maximumFractionDigits:0})}</div>
+    </div>`).join('') : '<div style="color:var(--muted);font-size:.85rem;padding:20px 0;text-align:center;">ยังไม่มีข้อมูล</div>';
+}
+
+function renderTimeChart(recs) {
+  const slots = ['เช้า','สาย','เที่ยง','บ่าย','เย็น'];
+  const slotIcons = {เช้า:'🌅',สาย:'🌤️',เที่ยง:'☀️',บ่าย:'🌥️',เย็น:'🌆'};
+  const totals = {};
+  const counts = {};
+  slots.forEach(s => { totals[s] = 0; counts[s] = 0; });
+  recs.forEach(r => {
+    const key = slots.find(s => r.slot?.includes(s));
+    if (key) { totals[key] += r.total; counts[key]++; }
+  });
+  const max = Math.max(...Object.values(totals), 1);
+  const grandTotal = Object.values(totals).reduce((a,b)=>a+b,0) || 1;
+  const peak = slots.reduce((a,b) => totals[a]>=totals[b]?a:b);
+
+  document.getElementById('timeBars').innerHTML = slots.map(s => {
+    const pct = Math.round(totals[s]/max*100);
+    const revPct = (totals[s]/grandTotal*100).toFixed(1);
+    const isPeak = s === peak && totals[peak] > 0;
+    return `
+      <div class="time-slot-row">
+        <div class="time-slot-label">
+          ${slotIcons[s]} ${s}
+        </div>
+        <div class="time-slot-bar-bg">
+          <div class="time-slot-bar-fill ${isPeak?'peak':'normal'}" style="width:${pct}%"></div>
+        </div>
+        <div class="time-slot-amt">฿${totals[s]>999?(totals[s]/1000).toFixed(1)+'k':totals[s].toLocaleString('th-TH')}</div>
+        <div class="time-slot-pct">${revPct}% ${isPeak?'<span class="peak-badge">🏆 ดีสุด</span>':''}</div>
+      </div>`;
+  }).join('');
+
+  const peakTotal = totals[peak];
+  document.getElementById('timePeak').innerHTML = peakTotal > 0
+    ? `💡 แนะนำ: เตรียมสต๊อกให้เต็มก่อนช่วง <strong style="color:var(--warn)">${slotIcons[peak]} ${peak}</strong> — รายได้รวม ฿${peakTotal.toLocaleString('th-TH')} (${(peakTotal/grandTotal*100).toFixed(1)}% ของยอดทั้งหมด)`
+    : '<span style="color:var(--muted);">ยังไม่มีข้อมูลเพียงพอ</span>';
+}
+
+function renderSchoolComp(recs) {
+  const totals = {1:0,2:0,3:0};
+  const counts = {1:0,2:0,3:0};
+  recs.forEach(r => { totals[r.school] += r.total; counts[r.school]++; });
+  const max = Math.max(...Object.values(totals), 1);
+  const colors = {1:'var(--school1)',2:'var(--school2)',3:'var(--school3)'};
+  const html = [1,2,3].map(s => `
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+      <div style="width:130px;font-family:'Noto Sans Thai',sans-serif;font-size:.82rem;font-weight:600;color:${colors[s]}">${SCHOOLS[s].replace('ร.ร.','')}</div>
+      <div style="flex:1;height:10px;background:var(--border);border-radius:99px;overflow:hidden;">
+        <div style="height:100%;width:${totals[s]/max*100}%;background:${colors[s]};border-radius:99px;transition:width .6s;"></div>
+      </div>
+      <div style="font-family:'Noto Sans Thai',sans-serif;font-size:.85rem;font-weight:700;color:${colors[s]};width:80px;text-align:right;">฿${totals[s].toLocaleString('th-TH',{minimumFractionDigits:0})}</div>
+      <div style="font-size:.75rem;color:var(--muted);width:48px;text-align:right;">${counts[s]} วัน</div>
+    </div>`).join('');
+  document.getElementById('schoolComp').innerHTML = html || '<div style="color:var(--muted);font-size:.85rem;">ยังไม่มีข้อมูล</div>';
+}
+
+function renderWeekChart() {
+  const dates = [...new Set(records.map(r=>r.date))].sort().slice(-7);
+  const colorArr = ['var(--school1)','var(--school2)','var(--school3)'];
+  const schoolNames = ['วัดดอนไก่ดี','วัดท่าพูด','สวนกุหลาบ'];
+
+  if (!dates.length) {
+    document.getElementById('weekBars').innerHTML = `<div style="width:100%;text-align:center;color:var(--muted);font-size:.85rem;padding:30px 0;">บันทึกยอดขายเพื่อดูกราฟ</div>`;
+    document.getElementById('weekSummary').textContent = '';
+    return;
+  }
+
+  // Per-school per-date totals
+  const data = dates.map(d => {
+    const ts = [1,2,3].map(s => records.filter(r=>r.date===d&&r.school===s).reduce((a,b)=>a+b.total,0));
+    return {date:d, totals:ts, grand:ts.reduce((a,b)=>a+b,0)};
+  });
+
+  const maxVal = Math.max(...data.map(d => Math.max(...d.totals)), 1);
+  const chartH = 120;
+
+  const html = data.map(d => {
+    const [y,m,day] = d.date.split('-');
+    const bars = d.totals.map((t,i) => {
+      const h = Math.max(Math.round(t/maxVal*chartH), t>0?5:0);
+      return `<div class="week-bar-single" style="height:${h}px;background:${colorArr[i]};opacity:0.88;"
+        data-tip="${schoolNames[i]}: ฿${t.toLocaleString('th-TH')}"></div>`;
+    }).join('');
+    return `
+      <div class="week-group">
+        <div class="week-grand-total">${d.grand>=1000?(d.grand/1000).toFixed(1)+'k':d.grand||'—'}</div>
+        <div class="week-bars-inner">${bars}</div>
+        <div class="week-date-lbl">${+day}<br>${MONTHS[+m-1]}</div>
+      </div>`;
+  }).join('');
+
+  document.getElementById('weekBars').innerHTML = html;
+
+  // Summary
+  const totalGrand = data.reduce((a,b)=>a+b.grand,0);
+  const bestD = data.sort((a,b)=>b.grand-a.grand)[0];
+  const [by,bm,bd] = bestD.date.split('-');
+  document.getElementById('weekSummary').textContent = `รวม 7 วัน: ฿${totalGrand.toLocaleString('th-TH')} • วันดีสุด: ${+bd} ${MONTHS[+bm-1]}`;
+}
+
+function renderRecommendations(recs) {
+  if (!recs.length) {
+    document.getElementById('recCards').innerHTML = '<div style="color:var(--muted);font-size:.85rem;padding:20px 0;grid-column:1/-1;text-align:center;">บันทึกข้อมูลเพื่อดูคำแนะนำ</div>';
+    return;
+  }
+  const map = {};
+  recs.forEach(r => r.items.forEach(it => {
+    if (!it.name) return;
+    if (!map[it.name]) map[it.name] = {name:it.name, qty:0, rev:0, days:new Set(), appearances:0};
+    map[it.name].qty += it.qty;
+    map[it.name].rev += it.sub || it.qty*it.price;
+    map[it.name].days.add(r.date);
+    map[it.name].appearances++;
+  }));
+  const products = Object.values(map).map(p => ({...p, days:p.days.size}));
+  const totalDays = [...new Set(recs.map(r=>r.date))].length || 1;
+  const avgQty = products.reduce((a,b)=>a+b.qty,0) / products.length || 1;
+  const cards = products.map(p => {
+    const freq = p.days / totalDays;
+    const relQty = p.qty / avgQty;
+    let type, badge, reason, stat;
+    if (relQty >= 1.4 && freq >= 0.6) {
+      type = 'buy'; badge = '🛒 ควรสต๊อกเพิ่ม';
+      reason = `ขายได้ ${p.qty} ชิ้น / ${p.days} วัน — ขายดีมาก ควรซื้อเพิ่มเพื่อไม่ให้ขาด`;
+      stat = `รายได้ ฿${p.rev.toLocaleString('th-TH',{maximumFractionDigits:0})}`;
+    } else if (relQty >= 0.8 && freq >= 0.4) {
+      type = 'hold'; badge = '📦 คงสต๊อกเดิม';
+      reason = `ขายได้ปกติ ${p.qty} ชิ้น / ${p.days} วัน — ไม่ต้องเพิ่มหรือลด`;
+      stat = `รายได้ ฿${p.rev.toLocaleString('th-TH',{maximumFractionDigits:0})}`;
+    } else {
+      type = 'drop'; badge = '⚠️ ควรเปลี่ยน/ลด';
+      reason = freq < 0.3 ? `ขายน้อยมาก — ปรากฏแค่ ${p.days} วัน ลองเปลี่ยนสินค้าหรือลดการสั่ง` : `ยอดต่ำกว่าค่าเฉลี่ย — พิจารณาปรับราคาหรือสินค้าใหม่`;
+      stat = `ขายได้ ${p.qty} ชิ้น (ต่ำกว่า avg)`;
+    }
+    return `<div class="rec-card ${type}">
+      <div class="rec-badge">${badge}</div>
+      <div class="rec-name">${p.name}</div>
+      <div class="rec-reason">${reason}</div>
+      <div class="rec-stat">${stat}</div>
+    </div>`;
+  }).join('');
+  document.getElementById('recCards').innerHTML = cards;
+}
+
+function renderInsights(recs) {
+  if (!recs.length) {
+    document.getElementById('dailyInsights').innerHTML = '<div style="color:var(--muted);font-size:.85rem;">บันทึกข้อมูลเพื่อดูสรุปรายวัน</div>';
+    return;
+  }
+  const insights = [];
+  const dayTotals = {};
+  recs.forEach(r => { dayTotals[r.date] = (dayTotals[r.date]||0) + r.total; });
+  const bestDay = Object.entries(dayTotals).sort((a,b)=>b[1]-a[1])[0];
+  if (bestDay) {
+    const [y,m,d] = bestDay[0].split('-');
+    insights.push({icon:'🏆', text:`วันขายดีที่สุดคือ <strong>${+d} ${MONTHS[+m-1]} ${+y+543}</strong> ยอดรวม <strong>฿${bestDay[1].toLocaleString('th-TH',{maximumFractionDigits:0})}</strong>`});
+  }
+  const avgDay = Object.values(dayTotals).reduce((a,b)=>a+b,0) / Object.keys(dayTotals).length;
+  insights.push({icon:'📊', text:`ยอดขายเฉลี่ยต่อวัน <strong>฿${Math.round(avgDay).toLocaleString('th-TH')}</strong> (จาก ${Object.keys(dayTotals).length} วันที่บันทึก)`});
+  const schoolTotals = {1:0,2:0,3:0};
+  recs.forEach(r => { schoolTotals[r.school] += r.total; });
+  const bestSchool = Object.entries(schoolTotals).sort((a,b)=>b[1]-a[1])[0];
+  if (bestSchool[1] > 0) {
+    insights.push({icon:'🏫', text:`โรงเรียนที่ทำยอดขายสูงสุดคือ <strong style="color:var(--text-dark)">${SCHOOLS[bestSchool[0]]}</strong> รวม <strong style="color:var(--text-dark)">฿${bestSchool[1].toLocaleString('th-TH',{maximumFractionDigits:0})}</strong>`});
+  }
+  const slotTotals = {};
+  recs.forEach(r => { const k = ['เช้า','สาย','เที่ยง','บ่าย','เย็น'].find(s=>r.slot?.includes(s)); if(k) slotTotals[k]=(slotTotals[k]||0)+r.total; });
+  const bestSlot = Object.entries(slotTotals).sort((a,b)=>b[1]-a[1])[0];
+  if (bestSlot) {
+    const icons = {เช้า:'🌅',สาย:'🌤️',เที่ยง:'☀️',บ่าย:'🌥️',เย็น:'🌆'};
+    insights.push({icon:icons[bestSlot[0]]||'🕐', text:`ช่วงเวลาที่ทำรายได้สูงที่สุดคือ <strong>${bestSlot[0]}</strong> รวม <strong>฿${bestSlot[1].toLocaleString('th-TH',{maximumFractionDigits:0})}</strong> — ควรเตรียมสต๊อกให้เต็มก่อนช่วงนี้`});
+  }
+  const allNames = new Set();
+  recs.forEach(r => r.items.forEach(i => { if(i.name) allNames.add(i.name); }));
+  insights.push({icon:'🍦', text:`มีสินค้าไอติมทั้งหมด <strong>${allNames.size} รายการ</strong> ในระบบ`});
+  document.getElementById('dailyInsights').innerHTML = insights.map(i =>
+    `<div class="insight-row"><div class="insight-icon">${i.icon}</div><div class="insight-text">${i.text}</div></div>`
+  ).join('');
+}
+
+function exportExcel() {
+  if (!records.length) return showToast('❌ ไม่มีข้อมูลให้ส่งออก','err');
+
+  const wb = XLSX.utils.book_new();
+  const MONTHS_TH = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+
+  // ─── SHEET 1: Dashboard Summary ──────────────────────────────────
+  const schoolTotals = {1:0,2:0,3:0};
+  const slotMap = {};
+  const prodMap = {};
+  const dayTotals = {};
+  records.forEach(r => {
+    schoolTotals[r.school] += r.total;
+    const slot = ['เช้า','สาย','เที่ยง','บ่าย','เย็น'].find(s=>r.slot?.includes(s))||'อื่น';
+    slotMap[slot] = (slotMap[slot]||0) + r.total;
+    dayTotals[r.date] = (dayTotals[r.date]||0) + r.total;
+    r.items.forEach(it => {
+      if(!it.name) return;
+      if(!prodMap[it.name]) prodMap[it.name] = {qty:0,rev:0};
+      prodMap[it.name].qty += it.qty;
+      prodMap[it.name].rev += it.sub||it.qty*it.price;
+    });
+  });
+  const grandTotal = Object.values(schoolTotals).reduce((a,b)=>a+b,0);
+  const totalDays = Object.keys(dayTotals).length||1;
+  const avgPerDay = grandTotal/totalDays;
+  const bestDay = Object.entries(dayTotals).sort((a,b)=>b[1]-a[1])[0];
+
+  const dash = [
+    ['🍦 IceCream POS Pro — รายงานสรุปธุรกิจ'],
+    [`สร้างเมื่อ: ${new Date().toLocaleString('th-TH')}`],
+    [],
+    ['📊 สรุปภาพรวม','','',''],
+    ['รายการ','ค่า','',''],
+    ['ยอดขายรวมทั้งหมด (฿)', grandTotal],
+    ['จำนวนวันที่บันทึก', totalDays],
+    ['ยอดเฉลี่ยต่อวัน (฿)', +avgPerDay.toFixed(2)],
+    ['วันขายดีที่สุด', bestDay ? (() => { const [y,m,d]=bestDay[0].split('-'); return `${+d} ${MONTHS_TH[+m-1]} ${+y+543}`; })() : '-'],
+    ['ยอดสูงสุดในวันเดียว (฿)', bestDay ? bestDay[1] : 0],
+    [],
+    ['🏫 ยอดขายแยกโรงเรียน','','',''],
+    ['โรงเรียน','ยอดรวม (฿)','% ของยอดรวม',''],
+    ['ร.ร.วัดดอนไก่ดี', schoolTotals[1], grandTotal>0 ? +(schoolTotals[1]/grandTotal*100).toFixed(1)+'%' : '0%'],
+    ['ร.ร.วัดท่าพูด',   schoolTotals[2], grandTotal>0 ? +(schoolTotals[2]/grandTotal*100).toFixed(1)+'%' : '0%'],
+    ['ร.ร.พระตำหนักสวนกุหลาบ', schoolTotals[3], grandTotal>0 ? +(schoolTotals[3]/grandTotal*100).toFixed(1)+'%' : '0%'],
+    ['รวมทั้งหมด', grandTotal, '100%'],
+    [],
+    ['⏰ ยอดขายแยกช่วงเวลา','','',''],
+    ['ช่วงเวลา','ยอดรวม (฿)','% ของยอดรวม',''],
+    ...['เช้า','สาย','เที่ยง','บ่าย','เย็น'].map(s => [
+      s, slotMap[s]||0, grandTotal>0 ? +((slotMap[s]||0)/grandTotal*100).toFixed(1)+'%' : '0%'
+    ]),
+    [],
+    ['🏅 Top 10 สินค้าขายดี','','',''],
+    ['อันดับ','ชื่อสินค้า','จำนวนชิ้น','รายได้ (฿)'],
+    ...Object.entries(prodMap).sort((a,b)=>b[1].qty-a[1].qty).slice(0,10).map(([name,v],i)=>[i+1,name,v.qty,v.rev]),
+  ];
+
+  const ws0 = XLSX.utils.aoa_to_sheet(dash);
+  ws0['!cols'] = [{wch:30},{wch:18},{wch:16},{wch:12}];
+  // Style title cell
+  if (ws0['A1']) { ws0['A1'].s = { font:{bold:true,sz:16,color:{rgb:'3B6FE8'}}, fill:{fgColor:{rgb:'EEF2FF'}} }; }
+  XLSX.utils.book_append_sheet(wb, ws0, '📊 Dashboard');
+
+  // ─── SHEET 2: รายละเอียดทั้งหมด ──────────────────────────────────
+  const detail = [['วันที่','ปีพ.ศ.','ช่วงเวลา','โรงเรียน','ชื่อสินค้า','จำนวน (ชิ้น)','ราคา/ชิ้น (฿)','ยอดรวมสินค้า (฿)','ยอดรวมรอบขาย (฿)']];
+  let dataStartRow = 2;
+  records.forEach(r => {
+    const [y,m,d] = r.date.split('-');
+    const thDate = `${+d}/${+m}/${+y+543}`;
+    r.items.forEach((it,idx) => {
+      detail.push([thDate,+y+543,r.slot||'',r.schoolName,it.name||'',it.qty||0,it.price||0,it.sub||(it.qty||0)*(it.price||0),idx===0?r.total:'']);
+    });
+  });
+  // Grand total row
+  const lastDataRow = detail.length;
+  detail.push(['','','','','รวมทั้งหมด','','',`=SUM(H2:H${lastDataRow})`,`ยอดรวม ${grandTotal.toLocaleString('th-TH')} ฿`]);
+
+  const ws1 = XLSX.utils.aoa_to_sheet(detail);
+  ws1['!cols'] = [14,8,18,24,20,14,14,18,20].map(w=>({wch:w}));
+  XLSX.utils.book_append_sheet(wb, ws1, '📋 รายละเอียด');
+
+  // ─── SHEET 3: สรุปรายวัน ──────────────────────────────────────────
+  const sumRows = [['วันที่','ช่วงเวลา','วัดดอนไก่ดี (฿)','วัดท่าพูด (฿)','สวนกุหลาบ (฿)','ยอดรวมวัน (฿)','เปรียบกับเฉลี่ย']];
+  const grouped = {};
+  records.forEach(r => {
+    const key = r.date+'|'+(r.slot||'');
+    if (!grouped[key]) grouped[key] = {date:r.date, slot:r.slot||'', t1:0, t2:0, t3:0};
+    grouped[key]['t'+r.school] += r.total;
+  });
+  const sumData = Object.values(grouped).sort((a,b)=>a.date.localeCompare(b.date));
+  sumData.forEach(g => {
+    const [y,m,d] = g.date.split('-');
+    const daySum = g.t1+g.t2+g.t3;
+    const vs = daySum >= avgPerDay ? `▲ +${((daySum-avgPerDay)/avgPerDay*100).toFixed(0)}%` : `▼ ${((daySum-avgPerDay)/avgPerDay*100).toFixed(0)}%`;
+    sumRows.push([`${+d}/${+m}/${+y+543}`,g.slot,g.t1,g.t2,g.t3,daySum,vs]);
+  });
+  // Totals row
+  const sr = sumRows.length;
+  sumRows.push(['','รวมทั้งหมด',`=SUM(C2:C${sr})`,`=SUM(D2:D${sr})`,`=SUM(E2:E${sr})`,`=SUM(F2:F${sr})`,'']);
+
+  const ws2 = XLSX.utils.aoa_to_sheet(sumRows);
+  ws2['!cols'] = [14,20,18,18,22,18,16].map(w=>({wch:w}));
+  XLSX.utils.book_append_sheet(wb, ws2, '📅 สรุปรายวัน');
+
+  // ─── SHEET 4: วิเคราะห์สินค้า ────────────────────────────────────
+  const totalDaysAll = [...new Set(records.map(r=>r.date))].length||1;
+  const avgQty = Object.values(prodMap).reduce((a,b)=>a+b.qty,0)/(Object.keys(prodMap).length||1);
+  const prodRows = [['อันดับ','ชื่อสินค้า','จำนวนชิ้น','รายได้ (฿)','% รายได้','คำแนะนำ']];
+  Object.entries(prodMap).sort((a,b)=>b[1].qty-a[1].qty).forEach(([name,v],i) => {
+    const pct = grandTotal>0 ? +(v.rev/grandTotal*100).toFixed(1)+'%' : '0%';
+    const rel = v.qty/avgQty;
+    const rec = rel>=1.4 ? '🛒 สต๊อกเพิ่ม' : rel>=0.8 ? '📦 คงเดิม' : '⚠️ พิจารณาเปลี่ยน';
+    prodRows.push([i+1, name, v.qty, v.rev, pct, rec]);
+  });
+  const pr = prodRows.length;
+  prodRows.push(['','รวม','','','','']);
+
+  const ws3 = XLSX.utils.aoa_to_sheet(prodRows);
+  ws3['!cols'] = [8,26,14,16,12,22].map(w=>({wch:w}));
+  XLSX.utils.book_append_sheet(wb, ws3, '🏅 สินค้า');
+
+  // ─── SHEET 5: กราฟข้อมูล (chart data) ───────────────────────────
+  const chartRows = [
+    ['📈 ข้อมูลสำหรับกราฟ — ยอดขายรายวัน (ล่าสุด 30 วัน)'],
+    [],
+    ['วันที่','วัดดอนไก่ดี','วัดท่าพูด','สวนกุหลาบ','รวม'],
+  ];
+  const last30 = [...new Set(records.map(r=>r.date))].sort().slice(-30);
+  last30.forEach(d => {
+    const [y,m,day] = d.split('-');
+    const t1 = records.filter(r=>r.date===d&&r.school===1).reduce((a,b)=>a+b.total,0);
+    const t2 = records.filter(r=>r.date===d&&r.school===2).reduce((a,b)=>a+b.total,0);
+    const t3 = records.filter(r=>r.date===d&&r.school===3).reduce((a,b)=>a+b.total,0);
+    chartRows.push([`${+day}/${+m}/${+y+543}`, t1, t2, t3, t1+t2+t3]);
+  });
+  chartRows.push([]);
+  chartRows.push(['ยอดรวมตามช่วงเวลา']);
+  chartRows.push(['ช่วงเวลา','ยอดรวม (฿)']);
+  ['เช้า','สาย','เที่ยง','บ่าย','เย็น'].forEach(s => chartRows.push([s, slotMap[s]||0]));
+  chartRows.push([]);
+  chartRows.push(['ยอดรวมแยกโรงเรียน']);
+  chartRows.push(['โรงเรียน','ยอดรวม (฿)']);
+  chartRows.push(['ร.ร.วัดดอนไก่ดี', schoolTotals[1]]);
+  chartRows.push(['ร.ร.วัดท่าพูด', schoolTotals[2]]);
+  chartRows.push(['ร.ร.พระตำหนักสวนกุหลาบ', schoolTotals[3]]);
+
+  const ws4 = XLSX.utils.aoa_to_sheet(chartRows);
+  ws4['!cols'] = [20,18,18,22,14].map(w=>({wch:w}));
+
+  // Add a bar chart for school comparison (SheetJS chart object)
+  const schoolDataStart = chartRows.findIndex(r=>r[0]==='โรงเรียน') + 2;
+  ws4['!charts'] = [{
+    type: 'bar',
+    title: 'ยอดขายแยกโรงเรียน',
+    series: [{ dataRange: `A${schoolDataStart}:B${schoolDataStart+2}`, title:'ยอดขาย (฿)' }],
+    position: { x:300, y:20, w:400, h:220 }
+  }];
+
+  XLSX.utils.book_append_sheet(wb, ws4, '📈 ข้อมูลกราฟ');
+
+  // ─── SAVE ─────────────────────────────────────────────────────────
+  const now = new Date();
+  const fname = `IceCream_Report_${now.getFullYear()+543}_${String(now.getMonth()+1).padStart(2,'0')}_${String(now.getDate()).padStart(2,'0')}.xlsx`;
+  XLSX.writeFile(wb, fname);
+  showToast('📊 Export Excel สำเร็จ! 5 Sheet พร้อมสรุป','ok');
+}
+
+// ─── THEME ────────────────────────────────────────────────────────────────────
+function setTheme(name) {
+  const root = document.documentElement;
+  // remove all existing theme attrs
+  root.removeAttribute('data-theme');
+  if (name !== 'lavender') root.setAttribute('data-theme', name);
+  // update dots
+  document.querySelectorAll('.theme-dot').forEach(d => d.classList.remove('active'));
+  const map = {lavender:0, mint:1, peach:2, sky:3, dark:4};
+  const dots = document.querySelectorAll('.theme-dot');
+  if (dots[map[name]]) dots[map[name]].classList.add('active');
+  localStorage.setItem('icepro_theme', name);
+  showToast(`🎨 เปลี่ยนธีมเป็น "${name}" แล้ว!`,'info');
+}
+
+function seedData() {
+  const products = [
+    {name:'ไอติมวอนตัน',price:5},{name:'ไอติมแท่ง',price:5},{name:'ไอติมเอสกิโม',price:10},
+    {name:'ไอติมถ้วย',price:8},{name:'ไอติมมะม่วง',price:10},{name:'ไอติมช็อกโกแลต',price:10},
+    {name:'ไอติมสตรอเบอร์รี่',price:8},{name:'ไอติมโซดา',price:6},{name:'ไอติมนม',price:7},
+    {name:'ไอติมลิ้นจี่',price:8},
+  ];
+  const slots = ['เช้า (06:00-10:00)','สาย (10:00-12:00)','เที่ยง (12:00-14:00)','บ่าย (14:00-16:00)','เย็น (16:00-18:00)'];
+  const slotWeight = [0.6, 1.4, 1.8, 1.2, 0.8];
+  const today = new Date();
+  const newRecs = [];
+  for (let day=13; day>=0; day--) {
+    const d = new Date(today); d.setDate(d.getDate()-day);
+    const iso = d.toISOString().slice(0,10);
+    slots.forEach((slot, si) => {
+      if (Math.random() > 0.7) return;
+      [1,2,3].forEach(s => {
+        const numItems = Math.floor(Math.random()*3)+1;
+        const items = [];
+        const picks = [...products].sort(()=>Math.random()-.5).slice(0, numItems);
+        picks.forEach(p => {
+          const qty = Math.floor(Math.random()*15*slotWeight[si])+2;
+          items.push({name:p.name, qty, price:p.price, sub:qty*p.price});
+        });
+        const total = items.reduce((a,b)=>a+b.sub,0);
+        newRecs.push({date:iso, slot, school:s, schoolName:SCHOOLS[s], items, total, saved:Date.now()+Math.random()*1e6});
+      });
+    });
+  }
+  records = [...newRecs, ...records];
+  localStorage.setItem('icepro_records', JSON.stringify(records));
+  closeModal('seedModal');
+  renderHistory();
+  showToast('🌱 สร้างข้อมูลทดสอบ 14 วันเรียบร้อย!','ok');
+}
+
+function openSeedModal() { document.getElementById('seedModal').classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+document.addEventListener('click', e => { if (e.target.classList.contains('modal-bg')) closeModal(e.target.id); });
+
+let toastTimer;
+function showToast(msg, type='ok') {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = `toast ${type} show`;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ─── PAYMENT METHODS ──────────────────────────────────────────────────────────
+const PAY_CONFIG = {
+  cash:     {label:'เงินสด',    icon:'💵', color:'#059669', bg:'rgba(5,150,105,.15)'},
+  transfer: {label:'โอนเงิน',   icon:'📲', color:'#3b82f6', bg:'rgba(59,130,246,.15)'},
+  qr:       {label:'QR Code',  icon:'📱', color:'#7c3aed', bg:'rgba(124,58,237,.15)'},
+};
+
+function selectPay(btn) {
+  btn.classList.toggle('active');
+  // ensure at least one always active
+  const active = document.querySelectorAll('.pay-btn.active');
+  if (!active.length) btn.classList.add('active');
+}
+
+// ─── PAYMENT REPORT ────────────────────────────────────────────────────────────
+let payPeriod = 'day';
+
+function setPeriod(p, btn) {
+  payPeriod = p;
+  document.querySelectorAll('.period-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  // Show/hide month picker
+  document.getElementById('payMonthPicker').style.display = (p === 'month') ? 'inline-block' : 'none';
+  renderPaymentReport();
+}
+
+function getPayRecords() {
+  if (payPeriod === 'day') {
+    const today = new Date().toISOString().slice(0,10);
+    return records.filter(r => r.date === today);
+  }
+  if (payPeriod === 'month') {
+    const val = document.getElementById('payMonthPicker').value || new Date().toISOString().slice(0,7);
+    return records.filter(r => r.date.startsWith(val));
+  }
+  // year
+  const yr = new Date().getFullYear();
+  return records.filter(r => r.date.startsWith(String(yr)));
+}
+
+function renderPaymentReport() {
+  const recs = getPayRecords();
+  const grandTotal = recs.reduce((a,b) => a+b.total, 0);
+
+  // Aggregate by pay method
+  const payTotals = {cash:0, transfer:0, qr:0, credit:0};
+  const payCounts = {cash:0, transfer:0, qr:0, credit:0};
+  recs.forEach(r => {
+    const methods = r.payMethods || ['cash'];
+    const share = r.total / methods.length;
+    methods.forEach(m => {
+      if (payTotals[m] !== undefined) {
+        payTotals[m] += share;
+        payCounts[m]++;
+      }
+    });
+  });
+
+  const fmt = n => '฿'+Math.round(n).toLocaleString('th-TH');
+  const periodLabel = {day:'วันนี้', month:'เดือนนี้', year:'ปีนี้'}[payPeriod];
+
+  // ── Summary cards ──
+  document.getElementById('paySummaryCards').innerHTML = `
+    <div style="display:flex;gap:12px;flex-wrap:wrap;width:100%;">
+      <div style="background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:14px 20px;flex:1;min-width:140px;">
+        <div style="font-size:.75rem;color:var(--muted);font-family:'Noto Sans Thai',sans-serif;">💰 ยอดรวม${periodLabel}</div>
+        <div style="font-family:'Noto Sans Thai',sans-serif;font-size:1.6rem;font-weight:800;background:linear-gradient(135deg,var(--p),var(--s1));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">${fmt(grandTotal)}</div>
+      </div>
+      ${Object.entries(PAY_CONFIG).map(([k,c]) => `
+        <div style="background:${c.bg};border:1px solid ${c.color}33;border-radius:12px;padding:14px 20px;flex:1;min-width:120px;">
+          <div style="font-size:.75rem;color:${c.color};font-family:'Noto Sans Thai',sans-serif;font-weight:600;">${c.icon} ${c.label}</div>
+          <div style="font-family:'Noto Sans Thai',sans-serif;font-size:1.3rem;font-weight:800;color:${c.color};">${fmt(payTotals[k])}</div>
+          <div style="font-size:.72rem;color:var(--muted);">${grandTotal>0?(payTotals[k]/grandTotal*100).toFixed(1)+'%':'0%'} · ${payCounts[k]} ครั้ง</div>
+        </div>`).join('')}
+    </div>`;
+
+  // ── Method breakdown bars ──
+  const maxPay = Math.max(...Object.values(payTotals), 1);
+  document.getElementById('payMethodBreakdown').innerHTML = Object.entries(PAY_CONFIG).map(([k,c]) => `
+    <div class="pay-method-row">
+      <div class="pm-icon">${c.icon}</div>
+      <div class="pm-name">${c.label}</div>
+      <div class="pm-bar-wrap"><div class="pm-bar-fill" style="width:${payTotals[k]/maxPay*100}%;background:${c.color};"></div></div>
+      <div class="pm-amt">${fmt(payTotals[k])}</div>
+      <div class="pm-pct">${grandTotal>0?(payTotals[k]/grandTotal*100).toFixed(0)+'%':'0%'}</div>
+    </div>`).join('');
+
+  // ── Daily chart (last 7 days) ──
+  const dates = [...new Set(records.map(r=>r.date))].sort().slice(-7);
+  const payColors = {cash:'#059669',transfer:'#3b82f6',qr:'#7c3aed',credit:'#d97706'};
+  const maxDay = Math.max(...dates.map(d => records.filter(r=>r.date===d).reduce((a,b)=>a+b.total,0)), 1);
+  const chartH = 100;
+  document.getElementById('payDailyChart').innerHTML = dates.length
+    ? dates.map(d => {
+        const dayRecs = records.filter(r=>r.date===d);
+        const dayPay = {cash:0,transfer:0,qr:0,credit:0};
+        dayRecs.forEach(r => {
+          const ms = r.payMethods||['cash']; const sh = r.total/ms.length;
+          ms.forEach(m => { if(dayPay[m]!==undefined) dayPay[m]+=sh; });
+        });
+        const dayTotal = dayRecs.reduce((a,b)=>a+b.total,0);
+        const [,m,day] = d.split('-');
+        const segs = Object.entries(dayPay).map(([k,v]) => {
+          const h = Math.round(v/maxDay*chartH);
+          return h>0?`<div style="width:100%;height:${h}px;background:${payColors[k]};opacity:.85;border-radius:2px 2px 0 0;"></div>`:'';
+        }).reverse().join('');
+        return `<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;">
+          <div style="font-family:'Noto Sans Thai',sans-serif;font-size:.68rem;color:var(--muted2);">${dayTotal>999?(dayTotal/1000).toFixed(1)+'k':dayTotal||''}</div>
+          <div style="width:100%;display:flex;flex-direction:column;justify-content:flex-end;height:${chartH}px;">${segs}</div>
+          <div style="font-size:.65rem;color:var(--muted);text-align:center;">${+day}<br>${MONTHS[+m-1]}</div>
+        </div>`;
+      }).join('')
+    : '<div style="width:100%;text-align:center;color:var(--muted);font-size:.85rem;">ยังไม่มีข้อมูล</div>';
+
+  // ── Per-school breakdown ──
+  document.getElementById('paySchoolBreakdown').innerHTML = [1,2,3].map(s => {
+    const sRecs = recs.filter(r=>r.school===s);
+    const sTotal = sRecs.reduce((a,b)=>a+b.total,0);
+    if (!sTotal) return '';
+    const sPay = {cash:0,transfer:0,qr:0,credit:0};
+    sRecs.forEach(r => { const ms=r.payMethods||['cash']; const sh=r.total/ms.length; ms.forEach(m=>{if(sPay[m]!==undefined) sPay[m]+=sh;}); });
+    const colors=['var(--school1)','var(--school2)','var(--school3)'];
+    return `<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);flex-wrap:wrap;">
+      <div style="width:160px;font-family:'Noto Sans Thai',sans-serif;font-weight:700;font-size:.83rem;color:${colors[s-1]};">${SCHOOLS[s]}</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;flex:1;">
+        ${Object.entries(PAY_CONFIG).map(([k,c]) => sPay[k]>0?`
+          <span style="background:${c.bg};border:1px solid ${c.color}44;border-radius:8px;padding:3px 10px;font-family:'Noto Sans Thai',sans-serif;font-size:.78rem;color:${c.color};font-weight:600;">${c.icon} ${c.label}: ${fmt(sPay[k])}</span>`:'').join('')}
+      </div>
+      <div style="font-family:'Noto Sans Thai',sans-serif;font-weight:800;font-size:.95rem;color:${colors[s-1]};">${fmt(sTotal)}</div>
+    </div>`;
+  }).join('');
+}
+
+// ─── EXPORT PAYMENT EXCEL ─────────────────────────────────────────────────────
+function exportPaymentExcel() {
+  if (!records.length) return showToast('❌ ไม่มีข้อมูล','err');
+  const wb = XLSX.utils.book_new();
+
+  // Sheet 1: รายละเอียดการชำระเงิน
+  const rows = [['วันที่','ช่วงเวลา','โรงเรียน','หมวด','สินค้า','จำนวน','ราคา/ชิ้น','ยอด','วิธีชำระ']];
+  records.forEach(r => {
+    const [y,m,d] = r.date.split('-');
+    const dt = `${+d}/${+m}/${+y+543}`;
+    const pay = (r.payMethods||['cash']).map(k=>PAY_CONFIG[k]?.label||k).join('+');
+    r.items.forEach((it,i) => {
+      rows.push([dt, r.slot||'', r.schoolName, r.category||'', it.name||'', it.qty||0, it.price||0, it.sub||(it.qty||0)*(it.price||0), i===0?pay:'']);
+    });
+  });
+  const ws1 = XLSX.utils.aoa_to_sheet(rows);
+  ws1['!cols'] = [12,18,24,10,20,10,12,14,20].map(w=>({wch:w}));
+  XLSX.utils.book_append_sheet(wb, ws1, '📋 รายละเอียด');
+
+  // Sheet 2: สรุปแยกวิธีชำระ รายวัน
+  const payMethods = ['cash','transfer','qr','credit'];
+  const dateSet = [...new Set(records.map(r=>r.date))].sort();
+  const sumRows = [['วันที่','เงินสด (฿)','โอนเงิน (฿)','QR Code (฿)','ยอดรวม (฿)']];
+  dateSet.forEach(date => {
+    const dayRecs = records.filter(r=>r.date===date);
+    const totals = {cash:0,transfer:0,qr:0,credit:0};
+    dayRecs.forEach(r => { const ms=r.payMethods||['cash']; const sh=r.total/ms.length; ms.forEach(m=>{if(totals[m]!==undefined) totals[m]+=sh;}); });
+    const [y,m,d] = date.split('-');
+    sumRows.push([`${+d}/${+m}/${+y+543}`, +totals.cash.toFixed(0), +totals.transfer.toFixed(0), +totals.qr.toFixed(0), +totals.credit.toFixed(0), dayRecs.reduce((a,b)=>a+b.total,0)]);
+  });
+  // Total row
+  const sr = sumRows.length;
+  sumRows.push(['รวมทั้งหมด',`=SUM(B2:B${sr})`,`=SUM(C2:C${sr})`,`=SUM(D2:D${sr})`,`=SUM(E2:E${sr})`,`=SUM(F2:F${sr})`]);
+  const ws2 = XLSX.utils.aoa_to_sheet(sumRows);
+  ws2['!cols'] = [14,16,16,14,18,16].map(w=>({wch:w}));
+  XLSX.utils.book_append_sheet(wb, ws2, '📅 สรุปรายวัน');
+
+  // Sheet 3: สรุปรายเดือน
+  const monthSet = [...new Set(records.map(r=>r.date.slice(0,7)))].sort();
+  const mRows = [['เดือน','เงินสด (฿)','โอนเงิน (฿)','QR Code (฿)','ยอดรวม (฿)']];
+  monthSet.forEach(mo => {
+    const moRecs = records.filter(r=>r.date.startsWith(mo));
+    const t = {cash:0,transfer:0,qr:0,credit:0};
+    moRecs.forEach(r => { const ms=r.payMethods||['cash']; const sh=r.total/ms.length; ms.forEach(m=>{if(t[m]!==undefined) t[m]+=sh;}); });
+    const [y,m] = mo.split('-');
+    mRows.push([`${MONTHS[+m-1]} ${+y+543}`, +t.cash.toFixed(0), +t.transfer.toFixed(0), +t.qr.toFixed(0), +t.credit.toFixed(0), moRecs.reduce((a,b)=>a+b.total,0)]);
+  });
+  const ws3 = XLSX.utils.aoa_to_sheet(mRows);
+  ws3['!cols'] = [16,16,16,14,18,16].map(w=>({wch:w}));
+  XLSX.utils.book_append_sheet(wb, ws3, '📆 สรุปรายเดือน');
+
+  // Sheet 4: สรุปรายปี
+  const yearSet = [...new Set(records.map(r=>r.date.slice(0,4)))].sort();
+  const yRows = [['ปี (พ.ศ.)','เงินสด (฿)','โอนเงิน (฿)','QR Code (฿)','ยอดรวม (฿)']];
+  yearSet.forEach(yr => {
+    const yRecs = records.filter(r=>r.date.startsWith(yr));
+    const t = {cash:0,transfer:0,qr:0,credit:0};
+    yRecs.forEach(r => { const ms=r.payMethods||['cash']; const sh=r.total/ms.length; ms.forEach(m=>{if(t[m]!==undefined) t[m]+=sh;}); });
+    yRows.push([`พ.ศ. ${+yr+543}`, +t.cash.toFixed(0), +t.transfer.toFixed(0), +t.qr.toFixed(0), +t.credit.toFixed(0), yRecs.reduce((a,b)=>a+b.total,0)]);
+  });
+  const ws4 = XLSX.utils.aoa_to_sheet(yRows);
+  ws4['!cols'] = [14,16,16,14,18,16].map(w=>({wch:w}));
+  XLSX.utils.book_append_sheet(wb, ws4, '📊 สรุปรายปี');
+
+  const now = new Date();
+  XLSX.writeFile(wb, `สรุปการชำระเงิน_${now.getFullYear()+543}_${String(now.getMonth()+1).padStart(2,'0')}_${String(now.getDate()).padStart(2,'0')}.xlsx`);
+  showToast('📊 Export สรุปการชำระเงินสำเร็จ!','ok');
+}
+
+init();
+</script>
+</body>
+</html>
